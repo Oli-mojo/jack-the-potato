@@ -1974,16 +1974,19 @@ async function connectWallet() {
 // ── JACK THE POTATO ──────────────────────────────────────────────────────────
 const SOUVENIR_ADDRESS = '0xe3b8D57012fA84d42f52ADb14c3C63f1E67868DC';
 const BACKEND_URL      = 'https://jack-the-potato-production.up.railway.app';
-const TRANSFER_TOPIC   = '0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef';
+const SOUVENIR_ABI     = ['function totalMinted() view returns (uint256)'];
 
 async function doJack() {
   if (!signer) { await connectWallet(); return; }
   const btn = document.getElementById('jack-btn');
   try {
+    const souvenirContract = new ethers.Contract(SOUVENIR_ADDRESS, SOUVENIR_ABI, provider);
+
     // Snapshot pre-jack state
-    const [prevHolder, prevTransferAt] = await Promise.all([
+    const [prevHolder, prevTransferAt, mintedBefore] = await Promise.all([
       readContract.holder(),
       readContract.lastTransferAt(),
+      souvenirContract.totalMinted(),
     ]);
     const holdDurationSeconds = Math.floor(Date.now()/1000) - Number(prevTransferAt);
 
@@ -1994,30 +1997,27 @@ async function doJack() {
     btn.disabled = true;
     const tx = await c.jackPotato({ value: minAsk });
     btn.textContent = 'Mining…';
-    const receipt = await tx.wait();
+    await tx.wait();
     btn.textContent = '✅ Jacked! Generating souvenir…';
 
-    // Find the SouvenirNFT mint event in the receipt (Transfer from 0x0)
-    const mintLog = receipt.logs.find(log =>
-      log.address.toLowerCase() === SOUVENIR_ADDRESS.toLowerCase() &&
-      log.topics[0] === TRANSFER_TOPIC &&
-      log.topics[1] === '0x0000000000000000000000000000000000000000000000000000000000000000'
-    );
-    const souvenirTokenId = mintLog ? parseInt(mintLog.topics[3], 16) : null;
+    // Check if a new souvenir was minted by comparing totalMinted before/after
+    const mintedAfter = await souvenirContract.totalMinted();
+    const souvenirTokenId = Number(mintedAfter) > Number(mintedBefore) ? Number(mintedAfter) : null;
 
     if (souvenirTokenId !== null) {
-      // Trigger backend souvenir generation (fire-and-forget)
       fetch(`${BACKEND_URL}/api/souvenir/generate`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          fromAddress:          prevHolder,
+          fromAddress:        prevHolder,
           holdDurationSeconds,
           souvenirTokenId,
-          pricePaid:            ethers.formatEther(minAsk),
+          pricePaid:          ethers.formatEther(minAsk),
         }),
       }).catch(e => console.warn('Souvenir backend call failed:', e));
       console.log(`🥔 Souvenir #${souvenirTokenId} generation triggered for ${prevHolder}`);
+    } else {
+      console.warn('No new souvenir detected after jack');
     }
 
     setTimeout(loadContractData, 2000);
