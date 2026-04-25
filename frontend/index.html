@@ -1197,16 +1197,16 @@ footer {
     </div>
     <div class="hero-kpis">
       <div class="kpi">
-        <div class="kpi-val" style="color:var(--pot);">$1,247</div>
+        <div class="kpi-val" id="kpi-pot" style="color:var(--pot);">—</div>
         <div class="kpi-label">Season Jackpot</div>
       </div>
       <div class="kpi">
-        <div class="kpi-val" style="color:var(--yellow);">1.65 ETH</div>
+        <div class="kpi-val" id="kpi-price" style="color:var(--yellow);">—</div>
         <div class="kpi-label">Current Price</div>
       </div>
       <div class="kpi">
-        <div class="kpi-val">47</div>
-        <div class="kpi-label">Souvenirs Minted</div>
+        <div class="kpi-val" id="kpi-jacks">—</div>
+        <div class="kpi-label">Total Jacks</div>
       </div>
     </div>
   </div>
@@ -1226,8 +1226,8 @@ footer {
       <div class="potato-stage-sub" id="stage-sub">Day 14 of 30 · eyes are opening</div>
 
       <div class="throne-holder" style="margin-top:10px;">
-        <div class="throne-holder-name">0xAlice.eth</div>
-        <div class="throne-holder-addr">0x3f8a…c7d2 · holding 14 days</div>
+        <div class="throne-holder-name" id="holder-name">—</div>
+        <div class="throne-holder-addr" id="holder-addr">loading…</div>
       </div>
 
       <div class="throne-stats">
@@ -1237,9 +1237,9 @@ footer {
           <div class="t-stat-sub" id="jacked-sub">80% of sale · Sprouting</div>
         </div>
         <div class="t-stat">
-          <div class="t-stat-label">If She Seals</div>
-          <div class="t-stat-val" style="color:var(--pot);">~$1,060</div>
-          <div class="t-stat-sub">85% of $1,247 Pot</div>
+          <div class="t-stat-label">If Holder Wins</div>
+          <div class="t-stat-val" style="color:var(--pot);" id="seal-val">—</div>
+          <div class="t-stat-sub" id="seal-sub">85% of pot</div>
         </div>
       </div>
 
@@ -1278,11 +1278,11 @@ footer {
       <div class="jackpot-callout" id="jackpot-callout">
         <div class="jackpot-callout-left">
           <div class="jackpot-callout-label">🏆 Season Jackpot</div>
-          <div class="jackpot-callout-amount">$1,247</div>
+          <div class="jackpot-callout-amount" id="callout-pot">—</div>
         </div>
         <div class="jackpot-callout-right">
           <div class="jackpot-callout-label">If you win it</div>
-          <div class="jackpot-callout-payout">$1,060 <span>→ you (85%)</span></div>
+          <div class="jackpot-callout-payout" id="callout-payout">— <span>→ you (85%)</span></div>
         </div>
       </div>
 
@@ -1581,7 +1581,7 @@ footer {
   </div>
 </footer>
 
-<script>
+<script type="text/removed-demo">
 const STAGES = {
   dormant: {
     badge:      '🥔 Dormant · min +20%',
@@ -1735,6 +1735,301 @@ function showTab(id) {
   if (btn) btn.classList.add('active');
   document.querySelector('.tab-section').scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/6.7.0/ethers.umd.min.js"></script>
+<script>
+// ── CONFIG ──────────────────────────────────────────────────────────────────
+const GAME_ADDRESS = '0x92Cff1F7E88bF5a676BfB499d2f5f74b1fa82257';
+const CHAIN_ID     = 84532; // Base Sepolia
+const RPC_URL      = 'https://sepolia.base.org';
+
+const GAME_ABI = [
+  'function pot() view returns (uint256)',
+  'function holder() view returns (address)',
+  'function lastJackPrice() view returns (uint256)',
+  'function lastTransferAt() view returns (uint256)',
+  'function gameState() view returns (uint8)',
+  'function currentStage() view returns (uint8)',
+  'function minNextAsk() view returns (uint256)',
+  'function timeUntilBoil() view returns (uint256)',
+  'function timeUntilSeal() view returns (uint256)',
+  'function jackCount() view returns (uint256)',
+  'function seasonNumber() view returns (uint256)',
+  'function jackPotato() payable',
+  'function voteBoil() payable',
+  'function pokeBoil()',
+];
+
+const STAGE_NAMES  = ['dormant', 'sprouting', 'harvest'];
+const SELLER_BPS   = [8500, 8000, 7000];
+const RESERVE_BPS  = [1300, 1800, 2800];
+
+let readProvider, readContract;
+let signer, walletAddress;
+let ethPrice = 0;
+let lastMinAsk = null;
+
+// ── INIT ─────────────────────────────────────────────────────────────────────
+async function init() {
+  readProvider = new ethers.JsonRpcProvider(RPC_URL);
+  readContract = new ethers.Contract(GAME_ADDRESS, GAME_ABI, readProvider);
+  try {
+    const r = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd');
+    ethPrice = (await r.json()).ethereum.usd || 0;
+  } catch(e) {}
+  await loadContractData();
+  setInterval(loadContractData, 30000);
+}
+
+// ── LOAD CONTRACT DATA ────────────────────────────────────────────────────────
+async function loadContractData() {
+  try {
+    const [potWei, holderAddr, lastPriceWei, lastTransfer, gameStateVal, stageVal,
+           minAskWei, timeBoil, timeSeal, jackCountVal] = await Promise.all([
+      readContract.pot(),
+      readContract.holder(),
+      readContract.lastJackPrice(),
+      readContract.lastTransferAt(),
+      readContract.gameState(),
+      readContract.currentStage(),
+      readContract.minNextAsk(),
+      readContract.timeUntilBoil(),
+      readContract.timeUntilSeal(),
+      readContract.jackCount(),
+    ]);
+
+    const potEth     = parseFloat(ethers.formatEther(potWei));
+    const lastPriceEth = parseFloat(ethers.formatEther(lastPriceWei));
+    const minAskEth  = parseFloat(ethers.formatEther(minAskWei));
+    lastMinAsk       = minAskWei;
+    const holdSecs   = Math.floor(Date.now()/1000) - Number(lastTransfer);
+    const gState     = Number(gameStateVal);  // 0=ACTIVE 1=BOIL 2=SEALED
+    const stage      = Number(stageVal);      // 0=DORMANT 1=SPROUTING 2=HARVEST
+    const stageStr   = gState === 1 ? 'boil' : STAGE_NAMES[stage];
+
+    const fmt = (eth) => ethPrice > 0
+      ? '$' + Math.round(eth * ethPrice).toLocaleString()
+      : eth.toFixed(4) + ' ETH';
+
+    // Body stage
+    document.getElementById('body').dataset.stage = stageStr;
+
+    // Eyebrow
+    document.querySelector('.hero-eyebrow').innerHTML =
+      `<div class="pulse-dot"></div> Live on Base Sepolia &nbsp;·&nbsp; Jack #${Number(jackCountVal)}`;
+
+    // KPIs
+    document.getElementById('kpi-pot').textContent   = fmt(potEth);
+    document.getElementById('kpi-price').textContent = lastPriceEth.toFixed(4) + ' ETH';
+    document.getElementById('kpi-jacks').textContent = Number(jackCountVal).toString();
+
+    // Holder
+    const isZero = holderAddr === '0x0000000000000000000000000000000000000000';
+    const shortH = isZero ? '—' : holderAddr.slice(0,6) + '…' + holderAddr.slice(-4);
+    document.getElementById('holder-name').textContent = shortH;
+    document.getElementById('holder-addr').textContent =
+      isZero ? 'Game not started' : holderAddr.slice(0,10) + '… · holding ' + formatDuration(holdSecs);
+
+    // Stage badge & name
+    const badgeTexts = {
+      dormant:   '🥔 Dormant · min +20%',
+      sprouting: '🌱 Sprouting · min +30%',
+      harvest:   '🌾 Harvest · min +50%',
+      boil:      '🔥 The Boil · jacking closed',
+    };
+    const stageDisplayNames = {
+      dormant: 'DORMANT', sprouting: 'SPROUTING', harvest: 'HARVEST', boil: 'THE BOIL',
+    };
+    document.getElementById('stage-badge').textContent = badgeTexts[stageStr];
+    document.getElementById('stage-name').textContent  = stageDisplayNames[stageStr];
+
+    // Stage sub / timer
+    if (gState === 1) {
+      const secsLeft = Number(timeSeal);
+      document.getElementById('stage-sub').textContent =
+        secsLeft > 0 ? `Payout unlocks in ${formatDuration(secsLeft)}` : 'Payout ready — call finalSeal!';
+    } else {
+      const boilIn = Number(timeBoil);
+      document.getElementById('stage-sub').textContent =
+        boilIn > 0 ? `Boil fires in ${formatDuration(boilIn)} with no jack` : 'Boil ready to fire';
+    }
+
+    // Tracker next label
+    const trackerNextTexts = {
+      dormant:   'Sprouts at day 5 → min +30%',
+      sprouting: 'Harvest at day 10 → min +50%',
+      harvest:   'The Boil fires at day 15',
+      boil:      'Jacking closed · awaiting payout',
+    };
+    document.getElementById('tracker-next').textContent = trackerNextTexts[stageStr];
+
+    // If-jacked payout
+    const sellerBps = gState === 1 ? 0 : SELLER_BPS[stage];
+    const sellerEth = minAskEth * sellerBps / 10000;
+    document.getElementById('jacked-val').textContent = fmt(sellerEth);
+    document.getElementById('jacked-sub').textContent =
+      (sellerBps/100) + '% of sale · ' + (stageStr === 'boil' ? 'jacking closed' : stageStr);
+
+    // If-holder-wins payout
+    const sealEth = potEth * 0.85;
+    document.getElementById('seal-val').textContent = fmt(sealEth);
+    document.getElementById('seal-sub').textContent = '85% of ' + potEth.toFixed(4) + ' ETH pot';
+
+    // Jackpot callout
+    document.getElementById('callout-pot').textContent = fmt(potEth);
+    document.getElementById('callout-payout').innerHTML = fmt(sealEth) + ' <span>→ you (85%)</span>';
+
+    // Min ask / jack panel
+    if (gState === 1) {
+      document.getElementById('jack-price').textContent = '—';
+      document.getElementById('jack-usd').textContent   = 'Jacking is closed. Whoever holds wins 85% of the jackpot.';
+      document.getElementById('jack-btn').textContent   = '🔒 Jacking Closed';
+      document.getElementById('jack-btn').disabled      = true;
+      document.getElementById('split-display').style.display = 'none';
+    } else {
+      const isHolder = walletAddress && walletAddress.toLowerCase() === holderAddr.toLowerCase();
+      document.getElementById('jack-price').textContent = minAskEth.toFixed(4) + ' ETH';
+      document.getElementById('jack-usd').textContent   =
+        (ethPrice > 0 ? '≈ $' + Math.round(minAskEth * ethPrice).toLocaleString() + ' · ' : '') +
+        stageStr.charAt(0).toUpperCase() + stageStr.slice(1) + ' requires min +' +
+        ({dormant:'20',sprouting:'30',harvest:'50'}[stageStr]||'?') + '% above last price';
+      document.getElementById('jack-btn').textContent   = isHolder ? '🥔 You\'re holding it' : `⚡ Jack for ${minAskEth.toFixed(4)} ETH`;
+      document.getElementById('jack-btn').disabled      = !!isHolder;
+      document.getElementById('split-display').style.display = 'flex';
+      document.getElementById('split-seller-pct').textContent = (SELLER_BPS[stage]/100) + '%';
+      document.getElementById('split-pot-pct').textContent    = (RESERVE_BPS[stage]/100) + '%';
+    }
+
+    // Ticker
+    const tickerStageText = {
+      dormant:   '🥔 DORMANT <span class="ticker-sep">·</span> MIN OVERPAY +20%',
+      sprouting: '🌱 SPROUTING <span class="ticker-sep">·</span> MIN OVERPAY +30%',
+      harvest:   '🌾 HARVEST <span class="ticker-sep">·</span> MIN OVERPAY +50%',
+      boil:      '🔥 THE BOIL <span class="ticker-sep">·</span> JACKING CLOSED',
+    };
+    document.getElementById('ticker-stage').innerHTML  = tickerStageText[stageStr];
+    document.getElementById('ticker-stage2').innerHTML = tickerStageText[stageStr];
+
+    // Stage tracker pips (reuse existing setStage logic)
+    updateStagePips(stageStr);
+
+  } catch(e) {
+    console.error('Contract read error:', e);
+  }
+}
+
+// ── STAGE TRACKER PIPS ───────────────────────────────────────────────────────
+function updateStagePips(stageStr) {
+  const row  = document.getElementById('stages-row');
+  const pips = row.querySelectorAll('.stage-pip');
+  const names = row.querySelectorAll('.stage-name');
+  const overpays = row.querySelectorAll('.stage-overpay');
+  const conns = row.querySelectorAll('.stage-connector');
+  const idx = { dormant:0, sprouting:1, harvest:2, boil:3 }[stageStr];
+  const pipClass = ['current-dormant','current-sprouting','current-harvest'];
+  ['🥔','🌱','🌾'].forEach((em, i) => {
+    pips[i].textContent = em;
+    pips[i].className = 'stage-pip ' + (i < idx ? 'done' : i === idx && idx < 3 ? pipClass[i] : '');
+  });
+  conns[0].className = 'stage-connector' + (idx > 0 ? ' done' : '');
+  conns[1].className = 'stage-connector' + (idx > 1 ? ' done' : '');
+  names.forEach((n,i) => { n.className = 'stage-name ' + (i < idx ? 'done' : i===idx&&idx<3?'live':''); });
+  overpays.forEach((o,i) => { o.className = 'stage-overpay ' + (i < idx ? 'done' : i===idx&&idx<3?'live':''); });
+}
+
+// ── WALLET CONNECT ───────────────────────────────────────────────────────────
+async function connectWallet() {
+  if (!window.ethereum) {
+    alert('Please install MetaMask to jack the potato!');
+    return;
+  }
+  try {
+    await window.ethereum.request({ method: 'eth_requestAccounts' });
+    // Switch to Base Sepolia
+    try {
+      await window.ethereum.request({
+        method: 'wallet_switchEthereumChain',
+        params: [{ chainId: '0x' + CHAIN_ID.toString(16) }],
+      });
+    } catch(sw) {
+      if (sw.code === 4902) {
+        await window.ethereum.request({
+          method: 'wallet_addEthereumChain',
+          params: [{ chainId: '0x'+CHAIN_ID.toString(16), chainName: 'Base Sepolia',
+            nativeCurrency: { name:'ETH', symbol:'ETH', decimals:18 },
+            rpcUrls: ['https://sepolia.base.org'],
+            blockExplorerUrls: ['https://sepolia.basescan.org'] }],
+        });
+      }
+    }
+    const web3Provider = new ethers.BrowserProvider(window.ethereum);
+    signer        = await web3Provider.getSigner();
+    walletAddress = await signer.getAddress();
+    document.querySelector('.connect-btn').textContent =
+      walletAddress.slice(0,6) + '…' + walletAddress.slice(-4);
+    await loadContractData(); // refresh to detect if connected wallet is holder
+  } catch(e) { console.error('Wallet error:', e); }
+}
+
+// ── JACK THE POTATO ──────────────────────────────────────────────────────────
+async function doJack() {
+  if (!signer) { await connectWallet(); return; }
+  const btn = document.getElementById('jack-btn');
+  try {
+    const c = new ethers.Contract(GAME_ADDRESS, GAME_ABI, signer);
+    const minAsk = await readContract.minNextAsk();
+    btn.textContent = 'Confirm in wallet…';
+    btn.disabled = true;
+    const tx = await c.jackPotato({ value: minAsk });
+    btn.textContent = 'Mining…';
+    await tx.wait();
+    btn.textContent = '✅ Jacked!';
+    setTimeout(loadContractData, 2000);
+  } catch(e) {
+    console.error('Jack error:', e);
+    btn.disabled = false;
+    await loadContractData();
+  }
+}
+
+// ── VOTE BOIL ────────────────────────────────────────────────────────────────
+async function doVote() {
+  if (!signer) { await connectWallet(); return; }
+  const val = document.querySelector('.vote-input').value;
+  if (!val || isNaN(val)) return alert('Enter a valid ETH amount');
+  try {
+    const c = new ethers.Contract(GAME_ADDRESS, GAME_ABI, signer);
+    const tx = await c.voteBoil({ value: ethers.parseEther(val) });
+    await tx.wait();
+    await loadContractData();
+  } catch(e) { console.error('Vote error:', e); }
+}
+
+// ── HELPERS ──────────────────────────────────────────────────────────────────
+function formatDuration(secs) {
+  if (secs <= 0)      return '0s';
+  if (secs < 3600)    return Math.floor(secs/60) + 'm';
+  if (secs < 86400)   return Math.floor(secs/3600) + 'h ' + Math.floor((secs%3600)/60) + 'm';
+  return Math.floor(secs/86400) + 'd ' + Math.floor((secs%86400)/3600) + 'h';
+}
+
+// ── TAB / DEMO HELPERS (keep existing) ───────────────────────────────────────
+function showTab(id) {
+  document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+  const content = document.getElementById('content-' + id);
+  const btn     = document.getElementById('tab-' + id);
+  if (content) content.classList.add('active');
+  if (btn) btn.classList.add('active');
+  document.querySelector('.tab-section').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+// ── WIRE UP ──────────────────────────────────────────────────────────────────
+document.querySelector('.connect-btn').onclick     = connectWallet;
+document.getElementById('jack-btn').onclick        = doJack;
+document.querySelector('.vote-btn').onclick        = doVote;
+
+init();
 </script>
 </body>
 </html>
