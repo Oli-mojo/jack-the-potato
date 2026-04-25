@@ -1980,7 +1980,7 @@ async function doJack() {
   if (!signer) { await connectWallet(); return; }
   const btn = document.getElementById('jack-btn');
   try {
-    const souvenirContract = new ethers.Contract(SOUVENIR_ADDRESS, SOUVENIR_ABI, provider);
+    const souvenirContract = new ethers.Contract(SOUVENIR_ADDRESS, SOUVENIR_ABI, readProvider);
 
     // Snapshot pre-jack state
     const [prevHolder, prevTransferAt, mintedBefore] = await Promise.all([
