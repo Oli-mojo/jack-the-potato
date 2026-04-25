@@ -51,7 +51,7 @@ async function getPotatoState() {
 
   const [jackCountVal, souvenirCountVal, lastPriceWei, lastTransfer, potWei, stageVal] = await Promise.all([
     game.jackCount(),
-    souvenir.souvenirCount(),
+    souvenir.totalMinted(),
     game.lastJackPrice(),
     game.lastTransferAt(),
     game.pot(),
