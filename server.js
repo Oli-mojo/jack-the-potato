@@ -23,7 +23,7 @@ app.use('/api/souvenir', souvenirRoutes);
 
 // Health check
 app.get('/api/health', (req, res) => {
-  res.json({ status: 'ok', project: 'Hot Potato 🥔' });
+  res.json({ status: 'ok', project: 'Jack the Potato 🥔' });
 });
 
 app.listen(PORT, () => {
