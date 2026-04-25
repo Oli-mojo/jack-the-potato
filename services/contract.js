@@ -20,12 +20,11 @@ const GAME_ABI = [
 ];
 
 const SOUVENIR_ABI = [
-  'function souvenirCount() view returns (uint256)',
+  'function totalMinted() view returns (uint256)',
   'function setTokenURI(uint256 tokenId, string uri) external',
-  'function rarityScore(uint256 tokenId) view returns (uint8)',
   'function ownerOf(uint256 tokenId) view returns (address)',
   'function tokenURI(uint256 tokenId) view returns (string)',
-  'function souvenirs(uint256 tokenId) view returns (uint256 holdDuration, uint8 tier, uint8 stage, uint256 jackPrice, uint256 prevPrice, address originalOwner)',
+  'function souvenirData(uint256 tokenId) view returns (address holder, uint256 holdDuration, uint8 tier, uint8 stage, uint256 jackPrice, uint256 prevPrice, uint256 mintedAt, uint256 season, uint256 rarityScore)',
 ];
 
 function getProvider() {
