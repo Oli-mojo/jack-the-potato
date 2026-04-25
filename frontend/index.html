@@ -1972,19 +1972,56 @@ async function connectWallet() {
 }
 
 // ── JACK THE POTATO ──────────────────────────────────────────────────────────
+const SOUVENIR_ADDRESS = '0xe3b8D57012fA84d42f52ADb14c3C63f1E67868DC';
+const BACKEND_URL      = 'https://jack-the-potato-production.up.railway.app';
+const TRANSFER_TOPIC   = '0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef';
+
 async function doJack() {
   if (!signer) { await connectWallet(); return; }
   const btn = document.getElementById('jack-btn');
   try {
+    // Snapshot pre-jack state
+    const [prevHolder, prevTransferAt] = await Promise.all([
+      readContract.holder(),
+      readContract.lastTransferAt(),
+    ]);
+    const holdDurationSeconds = Math.floor(Date.now()/1000) - Number(prevTransferAt);
+
     const c = new ethers.Contract(GAME_ADDRESS, GAME_ABI, signer);
     const minAsk = await readContract.minNextAsk();
+
     btn.textContent = 'Confirm in wallet…';
     btn.disabled = true;
     const tx = await c.jackPotato({ value: minAsk });
     btn.textContent = 'Mining…';
-    await tx.wait();
-    btn.textContent = '✅ Jacked!';
+    const receipt = await tx.wait();
+    btn.textContent = '✅ Jacked! Generating souvenir…';
+
+    // Find the SouvenirNFT mint event in the receipt (Transfer from 0x0)
+    const mintLog = receipt.logs.find(log =>
+      log.address.toLowerCase() === SOUVENIR_ADDRESS.toLowerCase() &&
+      log.topics[0] === TRANSFER_TOPIC &&
+      log.topics[1] === '0x0000000000000000000000000000000000000000000000000000000000000000'
+    );
+    const souvenirTokenId = mintLog ? parseInt(mintLog.topics[3], 16) : null;
+
+    if (souvenirTokenId !== null) {
+      // Trigger backend souvenir generation (fire-and-forget)
+      fetch(`${BACKEND_URL}/api/souvenir/generate`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          fromAddress:          prevHolder,
+          holdDurationSeconds,
+          souvenirTokenId,
+          pricePaid:            ethers.formatEther(minAsk),
+        }),
+      }).catch(e => console.warn('Souvenir backend call failed:', e));
+      console.log(`🥔 Souvenir #${souvenirTokenId} generation triggered for ${prevHolder}`);
+    }
+
     setTimeout(loadContractData, 2000);
+    setTimeout(() => { btn.textContent = '⚡ Jack the Potato'; }, 4000);
   } catch(e) {
     console.error('Jack error:', e);
     btn.disabled = false;
