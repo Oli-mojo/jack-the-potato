@@ -41,9 +41,9 @@ router.post('/generate', async (req, res) => {
       const edition = state.totalSouvenirs;
 
       // Apply pending promo/loyalty/referral boost (loyalty must be claimed explicitly)
-      const pendingBoost = consumePendingBoost(fromAddress);
+      const pendingBoost = await consumePendingBoost(fromAddress);
       const totalBoost   = Math.min(pendingBoost, 4);
-      const finalRarity  = applyBoost(baseRarity, totalBoost);
+      const finalRarity  = await applyBoost(baseRarity, totalBoost);
 
       console.log(`\n🥔 Generating souvenir #${souvenirTokenId} for ${fromAddress}`);
       console.log(`   Hold time: ${holdDurationHours.toFixed(1)}h → Base: ${baseRarity} | Pending boost: +${pendingBoost} → Final: ${finalRarity}`);
