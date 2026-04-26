@@ -1179,12 +1179,6 @@ footer {
   border-radius: 50%;
   flex-shrink: 0;
 }
-canvas#growth-canvas {
-  width: 100%;
-  height: 220px;
-  display: block;
-}
-
 /* ── JACK BID INPUT ── */
 .jack-amount-wrap {
   display: flex;
@@ -1298,6 +1292,287 @@ canvas#growth-canvas {
 .traj-stage.traj-current .traj-name  { color: rgba(255,245,224,0.55); }
 .traj-stage.traj-win    .traj-price { color: var(--pot); }
 .traj-stage.traj-win    .traj-name  { color: rgba(155,121,245,0.6); }
+
+/* ── PRICE BLOCKS (hero-left) ── */
+.price-blocks {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 4px;
+  padding-top: 20px;
+  border-top: 0.5px solid var(--border-soft);
+}
+.price-block {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.pb-label {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(255,245,224,0.35);
+}
+.pb-eth {
+  font-family: 'Black Ops One', sans-serif;
+  font-size: 28px;
+  line-height: 1;
+  color: var(--yellow);
+}
+.pb-eth.pot { color: var(--pot); }
+.pb-usd {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 12px;
+  color: rgba(255,245,224,0.35);
+  margin-top: 1px;
+}
+.pb-note {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 10px;
+  color: rgba(155,121,245,0.5);
+  margin-top: 1px;
+}
+
+/* ── GROWTH CHART (hero-left inline) ── */
+.hero-chart-wrap {
+  margin-top: 6px;
+  border: 1px solid var(--border-soft);
+  border-radius: 8px;
+  overflow: hidden;
+  background: rgba(255,245,224,0.015);
+}
+.hero-chart-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 9px 14px 6px;
+}
+.hero-chart-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(255,245,224,0.3);
+}
+.hero-chart-legend {
+  display: flex;
+  gap: 12px;
+}
+.hcl-item {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.hcl-dot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+canvas#growth-canvas {
+  width: 100%;
+  height: 150px;
+  display: block;
+}
+
+/* ── OVERPAY RADIOS ── */
+.overpay-section {
+  margin-top: 14px;
+}
+.overpay-label {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(255,245,224,0.3);
+  margin-bottom: 8px;
+}
+.overpay-radios {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+.op-opt {
+  flex: 1;
+  min-width: 52px;
+  background: rgba(255,245,224,0.04);
+  border: 1px solid rgba(255,245,224,0.12);
+  border-radius: 6px;
+  padding: 8px 4px;
+  text-align: center;
+  cursor: pointer;
+  font-family: 'Black Ops One', sans-serif;
+  font-size: 13px;
+  color: rgba(255,245,224,0.45);
+  transition: all .15s;
+  user-select: none;
+}
+.op-opt:hover { border-color: rgba(255,245,224,0.25); color: var(--cream); }
+.op-opt.selected {
+  background: rgba(232,24,106,0.12);
+  border-color: var(--brand);
+  color: var(--cream);
+}
+.op-custom-wrap {
+  display: none;
+  align-items: center;
+  gap: 6px;
+  margin-top: 8px;
+}
+.op-custom-wrap.visible { display: flex; }
+.op-custom-input {
+  flex: 1;
+  background: rgba(255,245,224,0.06);
+  border: 1px solid rgba(255,245,224,0.2);
+  border-radius: 6px;
+  padding: 8px 10px;
+  color: var(--cream);
+  font-family: 'Black Ops One', sans-serif;
+  font-size: 18px;
+  outline: none;
+  -moz-appearance: textfield;
+}
+.op-custom-input::-webkit-outer-spin-button,
+.op-custom-input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+.op-custom-input:focus { border-color: var(--brand); }
+.op-custom-eth {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  color: rgba(255,245,224,0.35);
+}
+.bid-total-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 0.5px solid var(--border-soft);
+}
+.bid-total-label {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(255,245,224,0.3);
+}
+.bid-total-eth {
+  font-family: 'Black Ops One', sans-serif;
+  font-size: 22px;
+  color: var(--cream);
+  line-height: 1;
+}
+.bid-total-usd {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 11px;
+  color: rgba(255,245,224,0.3);
+  margin-top: 2px;
+  text-align: right;
+}
+
+/* ── SOUVENIR SECTION ── */
+.souvenir-section {
+  padding: 48px 52px;
+  border-bottom: 0.5px solid var(--border);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+}
+.souvenir-main {
+  padding-right: 48px;
+  border-right: 0.5px solid var(--border);
+}
+.souvenir-side {
+  padding-left: 48px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.souvenir-eyebrow {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--violet);
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.souvenir-title {
+  font-family: 'Black Ops One', sans-serif;
+  font-size: 36px;
+  line-height: 1.05;
+  color: var(--cream);
+  margin-bottom: 10px;
+}
+.souvenir-sub {
+  font-family: 'Barlow', sans-serif;
+  font-size: 14px;
+  color: rgba(255,245,224,0.5);
+  line-height: 1.75;
+  max-width: 440px;
+  margin-bottom: 18px;
+}
+.souvenir-sub strong { color: var(--cream); }
+.souvenir-future-note {
+  background: rgba(196,181,244,0.06);
+  border: 1px solid rgba(196,181,244,0.18);
+  border-radius: 8px;
+  padding: 14px 18px;
+  font-family: 'Barlow', sans-serif;
+  font-size: 13px;
+  color: rgba(255,245,224,0.55);
+  line-height: 1.7;
+  max-width: 440px;
+}
+.souvenir-future-note strong { color: var(--violet); }
+.souvenir-rarity-card {
+  background: var(--card);
+  border: 1px solid var(--border-soft);
+  border-radius: 10px;
+  padding: 18px 20px;
+}
+.souvenir-rarity-title {
+  font-family: 'Black Ops One', sans-serif;
+  font-size: 11px;
+  color: rgba(255,245,224,0.4);
+  letter-spacing: 0.5px;
+  margin-bottom: 14px;
+}
+.souvenir-rarity-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 7px 0;
+  border-bottom: 1px solid rgba(255,245,224,0.05);
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 13px;
+}
+.souvenir-rarity-row:last-child { border-bottom: none; }
+.sr-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.sr-name { color: var(--cream); font-weight: 700; flex: 1; }
+.sr-desc { color: rgba(255,245,224,0.4); font-size: 12px; }
+.souvenir-mint-note {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 12px;
+  color: rgba(255,245,224,0.3);
+  line-height: 1.6;
+  margin-top: 4px;
+}
 </style>
 </head>
 <body id="body" data-stage="sprouting">
@@ -1363,52 +1638,33 @@ canvas#growth-canvas {
       <button class="btn-ghost" onclick="showTab('rules')">How It Works</button>
       <button class="btn-ghost" onclick="showTab('stages')">The Stages</button>
     </div>
-    <div class="hero-kpis">
-      <div class="kpi">
-        <div class="kpi-val" id="kpi-held">—</div>
-        <div class="kpi-label">Held For</div>
+
+    <!-- Price blocks: current price + jackpot -->
+    <div class="price-blocks">
+      <div class="price-block">
+        <div class="pb-label">Current Price</div>
+        <div class="pb-eth" id="pb-price">—</div>
+        <div class="pb-usd" id="pb-price-usd">loading…</div>
       </div>
-      <div class="kpi">
-        <div class="kpi-val" id="kpi-price" style="color:var(--yellow);">—</div>
-        <div class="kpi-label">Current Price</div>
-      </div>
-      <div class="kpi">
-        <div class="kpi-val" id="kpi-jacks">—</div>
-        <div class="kpi-label">Total Jacks</div>
+      <div class="price-block">
+        <div class="pb-label">🏆 Season Jackpot</div>
+        <div class="pb-eth pot" id="pb-pot">—</div>
+        <div class="pb-usd" id="pb-pot-usd">loading…</div>
+        <div class="pb-note" id="pb-pot-note">Win &amp; take 85%</div>
       </div>
     </div>
 
-    <!-- Price trajectory in hero-left -->
-    <div class="price-trajectory" id="price-trajectory">
-      <div class="traj-label">
-        <span>Price Trajectory</span>
-        <span class="traj-hint">min to jack at each stage</span>
-      </div>
-      <div class="traj-stages">
-        <div class="traj-stage" id="traj-dormant">
-          <span class="traj-emoji">🥔</span>
-          <span class="traj-price" id="traj-dormant-price">—</span>
-          <span class="traj-name">Dormant</span>
-        </div>
-        <div class="traj-arrow">›</div>
-        <div class="traj-stage" id="traj-sprouting">
-          <span class="traj-emoji">🌱</span>
-          <span class="traj-price" id="traj-sprout-price">—</span>
-          <span class="traj-name">Sprouting</span>
-        </div>
-        <div class="traj-arrow">›</div>
-        <div class="traj-stage" id="traj-harvest">
-          <span class="traj-emoji">🌾</span>
-          <span class="traj-price" id="traj-harvest-price">—</span>
-          <span class="traj-name">Harvest</span>
-        </div>
-        <div class="traj-arrow">›</div>
-        <div class="traj-stage traj-win">
-          <span class="traj-emoji">🏆</span>
-          <span class="traj-price" id="traj-win-price">—</span>
-          <span class="traj-name">Win</span>
+    <!-- Compact growth chart -->
+    <div class="hero-chart-wrap">
+      <div class="hero-chart-header">
+        <span class="hero-chart-title">Price Growth Potential · from <span id="growth-base-label">current price</span></span>
+        <div class="hero-chart-legend">
+          <div class="hcl-item"><div class="hcl-dot" style="background:#A87C52;"></div><span style="color:#A87C52;">+20%</span></div>
+          <div class="hcl-item"><div class="hcl-dot" style="background:#5DBB6A;"></div><span style="color:#5DBB6A;">+30%</span></div>
+          <div class="hcl-item"><div class="hcl-dot" style="background:#E5A700;"></div><span style="color:#E5A700;">+50%</span></div>
         </div>
       </div>
+      <canvas id="growth-canvas" width="900" height="150"></canvas>
     </div>
   </div>
 
@@ -1431,69 +1687,42 @@ canvas#growth-canvas {
         <div class="throne-holder-addr" id="holder-addr">loading…</div>
       </div>
 
-      <div class="throne-stats">
-        <div class="t-stat">
-          <div class="t-stat-label">If Jacked Now</div>
-          <div class="t-stat-val" style="color:var(--green);" id="jacked-val">~$2,970</div>
-          <div class="t-stat-sub" id="jacked-sub">80% of sale · Sprouting</div>
-        </div>
-        <div class="t-stat">
-          <div class="t-stat-label">If Holder Wins</div>
-          <div class="t-stat-val" style="color:var(--pot);" id="seal-val">—</div>
-          <div class="t-stat-sub" id="seal-sub">85% of pot</div>
-        </div>
-      </div>
-
-      <!-- Stage tracker -->
-      <div class="stage-tracker">
-        <div class="stage-tracker-label">
-          <span>Sprout Progress</span>
-          <span class="next" id="tracker-next">Next: Harvest at day 20 → min +50%</span>
-        </div>
-        <div class="stages-row" id="stages-row">
-          <div class="stage-node">
-            <div class="stage-pip done">🥔</div>
-            <div class="stage-name done">Dormant</div>
-            <div class="stage-overpay done">+20% min</div>
-          </div>
-          <div class="stage-connector done"></div>
-          <div class="stage-node">
-            <div class="stage-pip current-sprouting">🌱</div>
-            <div class="stage-name live">Sprouting</div>
-            <div class="stage-overpay live">+30% min</div>
-          </div>
-          <div class="stage-connector"></div>
-          <div class="stage-node">
-            <div class="stage-pip">🌾</div>
-            <div class="stage-name">Harvest</div>
-            <div class="stage-overpay">+50% min</div>
-          </div>
-        </div>
-      </div>
     </div>
 
     <!-- Jack panel -->
     <div class="jack-panel">
 
-      <!-- Jackpot always visible -->
-      <div class="jackpot-callout" id="jackpot-callout">
-        <div class="jackpot-callout-left">
-          <div class="jackpot-callout-label">🏆 Season Jackpot</div>
-          <div class="jackpot-callout-amount" id="callout-pot">—</div>
+      <!-- Overpay selector -->
+      <div class="overpay-section">
+        <div class="overpay-label">How much to overpay</div>
+        <div class="overpay-radios">
+          <div class="op-opt selected" data-pct="20" onclick="selectOverpay(this, 20)">+20%</div>
+          <div class="op-opt" data-pct="30" onclick="selectOverpay(this, 30)">+30%</div>
+          <div class="op-opt" data-pct="50" onclick="selectOverpay(this, 50)">+50%</div>
+          <div class="op-opt" data-pct="custom" onclick="selectOverpay(this, 'custom')">Custom</div>
         </div>
-        <div class="jackpot-callout-right">
-          <div class="jackpot-callout-label">If you win it</div>
-          <div class="jackpot-callout-payout" id="callout-payout">— <span>→ you (85%)</span></div>
+        <div class="op-custom-wrap" id="op-custom-wrap">
+          <input type="number" id="op-custom-input" class="op-custom-input" step="0.0001" min="0" placeholder="0.0000" />
+          <span class="op-custom-eth">ETH</span>
         </div>
       </div>
 
-      <div class="jack-min-label" style="margin-top:14px;">Your Bid</div>
-      <div class="jack-amount-wrap">
-        <input type="number" id="jack-amount-input" class="jack-amount-input" step="0.0001" min="0" placeholder="0.0000" />
-        <span class="jack-amount-eth">ETH</span>
+      <!-- Total you pay -->
+      <div class="bid-total-row">
+        <div>
+          <div class="bid-total-label">You pay</div>
+          <div class="bid-total-eth" id="bid-total-eth">—</div>
+          <div class="bid-total-usd" id="bid-total-usd"></div>
+        </div>
+        <div style="text-align:right;">
+          <div class="bid-total-label">Min earnout</div>
+          <div class="bid-total-eth" id="bid-earnout-eth" style="color:var(--green);">—</div>
+          <div class="bid-total-usd" id="bid-earnout-usd"></div>
+        </div>
       </div>
-      <div class="jack-price-usd" id="jack-usd">loading…</div>
-      <button class="jack-btn" id="jack-btn">⚡ Jack</button>
+
+      <button class="jack-btn" id="jack-btn" style="margin-top:12px;">⚡ Jack</button>
+
       <!-- Split display -->
       <div class="split-display" id="split-display">
         <div class="split-seg split-seller">
@@ -1512,32 +1741,15 @@ canvas#growth-canvas {
   </div>
 </div>
 
-<!-- PRICE GROWTH CHART -->
-<div class="growth-section">
-  <div class="growth-header">
-    <div>
-      <div class="growth-title">Price Growth Potential</div>
-      <div class="growth-sub">From <span id="growth-base-label">current price</span> · compounding at each jack's minimum overpay</div>
-    </div>
-    <div class="growth-legend">
-      <div class="gl-item"><div class="gl-dot" style="background:#A87C52;box-shadow:0 0 6px rgba(168,124,82,0.5);"></div><span style="color:#A87C52;">Quick jacks · +20% each</span></div>
-      <div class="gl-item"><div class="gl-dot" style="background:#5DBB6A;box-shadow:0 0 6px rgba(93,187,106,0.5);"></div><span style="color:#5DBB6A;">Measured · +30% each</span></div>
-      <div class="gl-item"><div class="gl-dot" style="background:#E5A700;box-shadow:0 0 6px rgba(229,167,0,0.5);"></div><span style="color:#E5A700;">Patient · +50% each</span></div>
-    </div>
-  </div>
-  <canvas id="growth-canvas" width="1400" height="220"></canvas>
-</div>
-
 <!-- RESERVE / JACKPOT -->
 <div class="pot-section">
   <div class="pot-main">
-    <div class="res-eyebrow">🏆 Season Jackpot Pot</div>
+    <div class="res-eyebrow">🏆 Season Jackpot</div>
     <div class="res-amount" id="res-amount">—</div>
     <div class="res-sub" id="res-sub">loading…</div>
     <div class="res-bar-track"><div class="res-bar-fill" id="res-bar-fill" style="width:0%"></div></div>
     <div class="res-detail">
-      <p>A slice of every jack goes straight to the Pot. <strong>The later in the season the jack happens, the bigger that slice</strong> — Harvest stage routes 28% of every sale to the jackpot vs 13% at Dormant. The pot compounds as the game gets more serious.</p>
-      <p style="margin-top:10px;">The Pot is locked the moment The Boil fires. Nobody can add to it after that — the jackpot is set, and the only fight is who's holding when the clock runs out.</p>
+      A slice of every jack goes straight to the Pot. <strong>The later in the season, the bigger the slice</strong> — Harvest routes 30% vs 15% at Dormant. Hold the potato when The Boil fires to claim your share.
     </div>
   </div>
   <div class="pot-side">
@@ -1553,13 +1765,55 @@ canvas#growth-canvas {
           <span class="res-payout-pct med">10%</span>
         </div>
         <div class="res-payout-row">
-          <span class="res-payout-who">Creator fee <span style="color:var(--violet)">(1% → Internet Archive)</span></span>
+          <span class="res-payout-who">Creator <span style="color:var(--violet)">(1% → Internet Archive)</span></span>
           <span class="res-payout-pct small">5%</span>
         </div>
       </div>
     </div>
     <div class="res-note">
-      The split is <strong>flat regardless of how long you held</strong> — tiers only affect your Souvenir rarity, not the payout. The seal always pays 85% to whoever is holding when The Boil fires.
+      Hold longest. Win 85% of the pot. <strong>The Boil can fire any time after Harvest</strong> — nobody knows when.
+    </div>
+  </div>
+</div>
+
+<!-- SOUVENIR NFTs -->
+<div class="souvenir-section">
+  <div class="souvenir-main">
+    <div class="souvenir-eyebrow">🎴 Souvenir NFTs</div>
+    <div class="souvenir-title">Every Hold<br>Leaves A Mark</div>
+    <div class="souvenir-sub">
+      Every time the potato gets jacked, the outgoing holder receives a <strong>Souvenir NFT</strong> — an on-chain record of their hold, generated uniquely for them. The longer and later you hold, the rarer your Souvenir.
+    </div>
+    <div class="souvenir-future-note">
+      <strong>🔮 Future seasons:</strong> Souvenirs from Season 1 may carry special status in later seasons — early holders become part of the game's history. Rarity earned now could have real value in what comes next.
+    </div>
+  </div>
+  <div class="souvenir-side">
+    <div class="souvenir-rarity-card">
+      <div class="souvenir-rarity-title">RARITY TIERS</div>
+      <div class="souvenir-rarity-row">
+        <div class="sr-dot" style="background:#E5A700;box-shadow:0 0 6px rgba(229,167,0,0.6);"></div>
+        <div class="sr-name">Legendary</div>
+        <div class="sr-desc">Harvest stage · long hold</div>
+      </div>
+      <div class="souvenir-rarity-row">
+        <div class="sr-dot" style="background:#9B79F5;box-shadow:0 0 6px rgba(155,121,245,0.5);"></div>
+        <div class="sr-name">Epic</div>
+        <div class="sr-desc">Harvest stage · any hold</div>
+      </div>
+      <div class="souvenir-rarity-row">
+        <div class="sr-dot" style="background:#5DBB6A;box-shadow:0 0 6px rgba(93,187,106,0.5);"></div>
+        <div class="sr-name">Rare</div>
+        <div class="sr-desc">Sprouting · long hold</div>
+      </div>
+      <div class="souvenir-rarity-row">
+        <div class="sr-dot" style="background:#A87C52;box-shadow:0 0 4px rgba(168,124,82,0.4);"></div>
+        <div class="sr-name">Common</div>
+        <div class="sr-desc">Dormant or quick hold</div>
+      </div>
+    </div>
+    <div class="souvenir-mint-note">
+      Souvenirs are minted automatically when you're jacked. No action needed — it goes straight to your wallet.
     </div>
   </div>
 </div>
@@ -1891,38 +2145,8 @@ function setStage(stage) {
   if (HERO_IMAGES[stage]) heroImg.src = HERO_IMAGES[stage];
   document.getElementById('stage-name').textContent     = s.name;
   document.getElementById('stage-sub').textContent      = s.sub;
-  document.getElementById('tracker-next').textContent   = s.trackerNext;
-  document.getElementById('jacked-val').textContent     = s.jackedVal;
-  document.getElementById('jacked-sub').textContent     = s.jackedSub;
-  document.getElementById('jack-price').textContent     = s.jackPrice;
-  document.getElementById('jack-usd').textContent       = s.jackUsd;
-  document.getElementById('jack-btn').textContent       = s.jackBtn;
   document.getElementById('split-seller-pct').textContent  = s.sellerPct;
   document.getElementById('split-pot-pct').textContent = s.potPct;
-
-  // Stage tracker pips
-  const row = document.getElementById('stages-row');
-  const pips  = row.querySelectorAll('.stage-pip');
-  const names = row.querySelectorAll('.stage-name');
-  const overpays = row.querySelectorAll('.stage-overpay');
-  const conns = row.querySelectorAll('.stage-connector');
-
-  const pipClasses = [s.pipDormant, s.pipSprout, s.pipHarvest];
-  const isDone     = [s.dormantDone, s.connDone, s.connDone2];
-
-  ['🥔','🌱','🌾'].forEach((em, i) => {
-    pips[i].className  = 'stage-pip ' + (pipClasses[i] || '');
-    pips[i].textContent = em;
-  });
-
-  // connector classes
-  conns[0].className = 'stage-connector' + (s.connDone  ? ' done' : '');
-  conns[1].className = 'stage-connector' + (s.connDone2 ? ' done' : '');
-
-  // name/overpay highlighting
-  const liveIdx = ['dormant','sprouting','harvest','boil'].indexOf(stage);
-  names.forEach((n, i)  => { n.className  = 'stage-name '    + (i < liveIdx ? 'done' : i === liveIdx && liveIdx < 3 ? 'live' : ''); });
-  overpays.forEach((o, i)=> { o.className = 'stage-overpay ' + (i < liveIdx ? 'done' : i === liveIdx && liveIdx < 3 ? 'live' : ''); });
 
   // ticker update
   const tickerTexts = {
@@ -1938,9 +2162,15 @@ function setStage(stage) {
   document.querySelectorAll('.demo-btn').forEach(b => b.classList.remove('active'));
   event.target.classList.add('active');
 
-  // the boil: hide pot split segs
+  // the boil: disable jacking, hide split
   const splitDisplay = document.getElementById('split-display');
   splitDisplay.style.display = stage === 'boil' ? 'none' : 'flex';
+  document.querySelectorAll('.op-opt').forEach(el => el.style.opacity = stage === 'boil' ? '0.3' : '1');
+  const jackBtn = document.getElementById('jack-btn');
+  if (stage === 'boil') {
+    jackBtn.textContent = '🔒 Jacking Closed';
+    jackBtn.disabled = true;
+  }
 }
 
 function showTab(id) {
@@ -1991,6 +2221,8 @@ let lastMinAsk = null;
 async function init() {
   readProvider = new ethers.JsonRpcProvider(RPC_URL);
   readContract = new ethers.Contract(GAME_ADDRESS, GAME_ABI, readProvider);
+  // Draw chart immediately with placeholder price
+  drawGrowthChart(0.01);
   try {
     const r = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd');
     ethPrice = (await r.json()).ethereum.usd || 0;
@@ -2036,10 +2268,21 @@ async function loadContractData() {
     document.querySelector('.hero-eyebrow').innerHTML =
       `<div class="pulse-dot"></div> Live on Base Sepolia &nbsp;·&nbsp; Jack #${Number(jackCountVal)}`;
 
-    // KPIs
-    document.getElementById('kpi-held').textContent  = formatDuration(holdSecs);
-    document.getElementById('kpi-price').textContent = lastPriceEth.toFixed(4) + ' ETH';
-    document.getElementById('kpi-jacks').textContent = Number(jackCountVal).toString();
+    // Price blocks (hero-left)
+    const pbPrice = document.getElementById('pb-price');
+    const pbPriceUsd = document.getElementById('pb-price-usd');
+    const pbPot   = document.getElementById('pb-pot');
+    const pbPotUsd = document.getElementById('pb-pot-usd');
+    const pbPotNote = document.getElementById('pb-pot-note');
+    if (pbPrice) pbPrice.textContent = lastPriceEth.toFixed(4) + ' ETH';
+    if (pbPriceUsd) pbPriceUsd.textContent = ethPrice > 0
+      ? '≈ $' + Math.round(lastPriceEth * ethPrice).toLocaleString() + ' · held ' + formatDuration(holdSecs)
+      : 'held ' + formatDuration(holdSecs);
+    if (pbPot) pbPot.textContent = potEth.toFixed(4) + ' ETH';
+    if (pbPotUsd) pbPotUsd.textContent = ethPrice > 0
+      ? '≈ $' + Math.round(potEth * ethPrice).toLocaleString()
+      : '';
+    if (pbPotNote) pbPotNote.textContent = 'Win & take ' + (potEth * 0.85).toFixed(4) + ' ETH (85%)';
 
     // Holder
     const isZero = holderAddr === '0x0000000000000000000000000000000000000000';
@@ -2072,31 +2315,6 @@ async function loadContractData() {
         boilIn > 0 ? `Boil fires in ${formatDuration(boilIn)} with no jack` : 'Boil ready to fire';
     }
 
-    // Tracker next label
-    const trackerNextTexts = {
-      dormant:   'Sprouts at day 5 → min +30%',
-      sprouting: 'Harvest at day 10 → min +50%',
-      harvest:   'The Boil fires at day 15',
-      boil:      'Jacking closed · awaiting payout',
-    };
-    document.getElementById('tracker-next').textContent = trackerNextTexts[stageStr];
-
-    // If-jacked payout
-    const sellerBps = gState === 1 ? 0 : SELLER_BPS[stage];
-    const sellerEth = minAskEth * sellerBps / 10000;
-    document.getElementById('jacked-val').textContent = fmt(sellerEth);
-    document.getElementById('jacked-sub').textContent =
-      (sellerBps/100) + '% of sale · ' + (stageStr === 'boil' ? 'jacking closed' : stageStr);
-
-    // If-holder-wins payout
-    const sealEth = potEth * 0.85;
-    document.getElementById('seal-val').textContent = fmt(sealEth);
-    document.getElementById('seal-sub').textContent = '85% of ' + potEth.toFixed(4) + ' ETH pot';
-
-    // Jackpot callout
-    document.getElementById('callout-pot').textContent = fmt(potEth);
-    document.getElementById('callout-payout').innerHTML = fmt(sealEth) + ' <span>→ you (85%)</span>';
-
     // Pot section (below hero)
     const resAmount = document.getElementById('res-amount');
     const resSub    = document.getElementById('res-sub');
@@ -2106,14 +2324,12 @@ async function loadContractData() {
     // Bar: scale relative to a rough target (e.g. 5 ETH = full bar)
     if (resBar) resBar.style.width = Math.min(100, (potEth / 5) * 100).toFixed(1) + '%';
 
-    // Min ask / jack panel
+    // Jack panel
     if (gState === 1) {
-      document.getElementById('jack-usd').textContent   = 'Jacking is closed. Whoever holds wins 85% of the jackpot.';
       document.getElementById('jack-btn').textContent   = '🔒 Jacking Closed';
       document.getElementById('jack-btn').disabled      = true;
-      const inputEl = document.getElementById('jack-amount-input');
-      if (inputEl) inputEl.disabled = true;
       document.getElementById('split-display').style.display = 'none';
+      document.querySelectorAll('.op-opt').forEach(el => el.style.opacity = '0.3');
     } else {
       const isHolder = walletAddress && walletAddress.toLowerCase() === holderAddr.toLowerCase();
       document.getElementById('split-display').style.display = 'flex';
@@ -2123,13 +2339,14 @@ async function loadContractData() {
       if (isHolder) {
         document.getElementById('jack-btn').textContent = '🥔 You\'re holding it';
         document.getElementById('jack-btn').disabled = true;
-        document.getElementById('jack-usd').textContent = 'You hold the potato — wait to be jacked or hold for the win.';
+        document.querySelectorAll('.op-opt').forEach(el => el.style.opacity = '0.4');
       } else {
+        document.querySelectorAll('.op-opt').forEach(el => el.style.opacity = '1');
         updateBidInput(minAskEth, stageStr, stage);
       }
     }
 
-    // Growth chart (uses lastJackPrice as base, independent of fee)
+    // Growth chart (uses lastJackPrice as base)
     drawGrowthChart(lastPriceEth);
 
     // Ticker
@@ -2141,12 +2358,6 @@ async function loadContractData() {
     };
     document.getElementById('ticker-stage').innerHTML  = tickerStageText[stageStr];
     document.getElementById('ticker-stage2').innerHTML = tickerStageText[stageStr];
-
-    // Stage tracker pips (reuse existing setStage logic)
-    updateStagePips(stageStr);
-
-    // Price trajectory
-    updateTrajectory(lastPriceEth, stageStr, potEth);
 
   } catch(e) {
     console.error('Contract read error:', e);
@@ -2222,17 +2433,18 @@ function drawGrowthChart(startEth) {
   const canvas = document.getElementById('growth-canvas');
   if (!canvas || startEth <= 0) return;
   const ctx = canvas.getContext('2d');
-  const W = 1400, H = 220;
-  const padL = 90, padR = 160, padT = 16, padB = 38;
+  const W = 900, H = 150;
+  canvas.width = W; canvas.height = H;
+  const padL = 44, padR = 80, padT = 10, padB = 24;
   const cW = W - padL - padR, cH = H - padT - padB;
-  const JACKS = 12;
+  const JACKS = 10;
 
   ctx.clearRect(0, 0, W, H);
 
   const scenarios = [
-    { mul: 1.20, color: '#A87C52', glow: 'rgba(168,124,82,0.4)',  label: '×' },
-    { mul: 1.30, color: '#5DBB6A', glow: 'rgba(93,187,106,0.4)',  label: '×' },
-    { mul: 1.50, color: '#E5A700', glow: 'rgba(229,167,0,0.4)',   label: '×' },
+    { mul: 1.20, color: '#A87C52', label: '×' },
+    { mul: 1.30, color: '#5DBB6A', label: '×' },
+    { mul: 1.50, color: '#E5A700', label: '×' },
   ];
 
   scenarios.forEach(s => {
@@ -2241,22 +2453,29 @@ function drawGrowthChart(startEth) {
   });
 
   const maxVal = scenarios[2].data[JACKS];
-  const logMin = Math.log(startEth);
-  const logMax = Math.log(maxVal * 1.35);
+  const logMin = Math.log(startEth * 0.9);
+  const logMax = Math.log(maxVal * 1.5);
 
   const xPos = i => padL + (i / JACKS) * cW;
   const yPos = v => padT + (1 - (Math.log(v) - logMin) / (logMax - logMin)) * cH;
 
-  // Background glow bands per scenario (subtle)
-  scenarios.forEach((s, si) => {
-    const grad = ctx.createLinearGradient(padL, 0, padL + cW, 0);
-    grad.addColorStop(0, 'transparent');
-    grad.addColorStop(1, s.color.replace(')', ',0.03)').replace('rgb', 'rgba'));
-    ctx.fillStyle = grad;
-  });
+  // ── Pot zone background (top 40% of chart = jackpot territory)
+  const potZoneY = padT;
+  const potZoneH = cH * 0.42;
+  const potGrad = ctx.createLinearGradient(0, potZoneY, 0, potZoneY + potZoneH);
+  potGrad.addColorStop(0, 'rgba(155,121,245,0.09)');
+  potGrad.addColorStop(1, 'rgba(155,121,245,0)');
+  ctx.fillStyle = potGrad;
+  ctx.fillRect(padL, potZoneY, cW, potZoneH);
+
+  // Pot zone label
+  ctx.fillStyle = 'rgba(155,121,245,0.3)';
+  ctx.font = '9px "Barlow Condensed", sans-serif';
+  ctx.textAlign = 'left';
+  ctx.fillText('🏆 jackpot territory', padL + 4, potZoneY + 11);
 
   // Vertical grid lines
-  for (let i = 1; i <= JACKS; i++) {
+  for (let i = 2; i <= JACKS; i += 2) {
     ctx.strokeStyle = 'rgba(255,245,224,0.05)';
     ctx.lineWidth = 1;
     ctx.setLineDash([]);
@@ -2266,42 +2485,40 @@ function drawGrowthChart(startEth) {
     ctx.stroke();
   }
 
-  // Y-axis ticks (multipliers of startEth)
-  const muls = [1, 2, 5, 10, 25, 57.7];
+  // Y-axis ticks
+  const muls = [1, 2, 5, 10, 25];
   muls.forEach(m => {
     const v = startEth * m;
-    if (v > maxVal * 1.3) return;
+    if (v > maxVal * 1.4) return;
     const y = yPos(v);
-    if (y < padT - 4 || y > padT + cH + 4) return;
-    // gridline
+    if (y < padT - 2 || y > padT + cH + 2) return;
     ctx.strokeStyle = 'rgba(255,245,224,0.06)';
     ctx.lineWidth = 1;
-    ctx.setLineDash(m === 1 ? [] : [4, 6]);
+    ctx.setLineDash(m === 1 ? [] : [3, 5]);
     ctx.beginPath(); ctx.moveTo(padL, y); ctx.lineTo(padL + cW, y); ctx.stroke();
     ctx.setLineDash([]);
-    // label
-    ctx.fillStyle = 'rgba(255,245,224,0.28)';
-    ctx.font = '11px "Barlow Condensed", sans-serif';
+    ctx.fillStyle = 'rgba(255,245,224,0.25)';
+    ctx.font = '9px "Barlow Condensed", sans-serif';
     ctx.textAlign = 'right';
-    ctx.fillText(m === 1 ? 'Start' : m + '×', padL - 8, y + 4);
+    ctx.fillText(m === 1 ? '1×' : m + '×', padL - 5, y + 3);
   });
 
   // X-axis labels
-  ctx.fillStyle = 'rgba(255,245,224,0.22)';
-  ctx.font = '11px "Barlow Condensed", sans-serif';
+  ctx.fillStyle = 'rgba(255,245,224,0.2)';
+  ctx.font = '9px "Barlow Condensed", sans-serif';
   ctx.textAlign = 'center';
-  [0, 2, 4, 6, 8, 10, 12].forEach(i => {
-    ctx.fillText(i === 0 ? 'Now' : `Jack ${i}`, xPos(i), padT + cH + 20);
+  [0, 4, 8, 10].forEach(i => {
+    ctx.fillText(i === 0 ? 'Now' : `+${i} jacks`, xPos(i), padT + cH + 16);
   });
 
-  // Draw lines (back to front)
+  // Draw lines
   scenarios.forEach(s => {
-    // Glow pass
+    // Glow
     ctx.strokeStyle = s.color;
-    ctx.lineWidth = 6;
-    ctx.globalAlpha = 0.15;
+    ctx.lineWidth = 5;
+    ctx.globalAlpha = 0.12;
     ctx.shadowColor = s.color;
-    ctx.shadowBlur = 12;
+    ctx.shadowBlur = 8;
     ctx.beginPath();
     s.data.forEach((v, i) => { i === 0 ? ctx.moveTo(xPos(i), yPos(v)) : ctx.lineTo(xPos(i), yPos(v)); });
     ctx.stroke();
@@ -2310,7 +2527,7 @@ function drawGrowthChart(startEth) {
 
     // Main line
     ctx.strokeStyle = s.color;
-    ctx.lineWidth = 2;
+    ctx.lineWidth = 1.5;
     ctx.beginPath();
     s.data.forEach((v, i) => { i === 0 ? ctx.moveTo(xPos(i), yPos(v)) : ctx.lineTo(xPos(i), yPos(v)); });
     ctx.stroke();
@@ -2319,23 +2536,19 @@ function drawGrowthChart(startEth) {
     s.data.forEach((v, i) => {
       ctx.fillStyle = s.color;
       ctx.beginPath();
-      ctx.arc(xPos(i), yPos(v), i === 0 ? 4 : 3, 0, Math.PI * 2);
+      ctx.arc(xPos(i), yPos(v), i === 0 ? 3 : 2, 0, Math.PI * 2);
       ctx.fill();
     });
 
-    // End-of-line label
+    // End label
     const last = s.data[JACKS];
     const mul  = (last / startEth).toFixed(0);
-    const lx   = xPos(JACKS) + 12;
+    const lx   = xPos(JACKS) + 8;
     const ly   = yPos(last);
     ctx.fillStyle = s.color;
-    ctx.font = 'bold 12px "Barlow Condensed", sans-serif';
+    ctx.font = 'bold 10px "Barlow Condensed", sans-serif';
     ctx.textAlign = 'left';
-    ctx.fillText(mul + '×', lx, ly + 4);
-    const ethLbl = last >= 0.001 ? last.toFixed(3) : last.toFixed(5);
-    ctx.fillStyle = 'rgba(255,245,224,0.4)';
-    ctx.font = '10px "Barlow Condensed", sans-serif';
-    ctx.fillText(ethLbl + ' ETH', lx, ly + 15);
+    ctx.fillText(mul + '×', lx, ly + 3);
   });
 
   // Base price label
@@ -2343,67 +2556,95 @@ function drawGrowthChart(startEth) {
   document.getElementById('growth-base-label').textContent = baseLabel + ' ETH';
 }
 
-// ── BID INPUT HANDLER ────────────────────────────────────────────────────────
+// ── OVERPAY RADIO HANDLER ────────────────────────────────────────────────────
 let currentMinAskEth = 0;
+let selectedOverpayPct = 20; // default: matches first selected radio
+window._currentBidEth = 0;
 
-function updateBidInput(minAskEth, stageStr, stageIdx) {
-  const inputEl = document.getElementById('jack-amount-input');
-  if (!inputEl) return;
-
-  currentMinAskEth = minAskEth;
-  inputEl.setAttribute('min', minAskEth.toFixed(6));
-
-  // Only set value if untouched or was previously at minimum
-  const current = parseFloat(inputEl.value) || 0;
-  if (current === 0 || Math.abs(current - currentMinAskEth) < 0.00001 || current < minAskEth) {
-    inputEl.value = minAskEth.toFixed(4);
-    inputEl.classList.remove('over-min', 'under-min');
+function selectOverpay(el, pct) {
+  document.querySelectorAll('.op-opt').forEach(o => o.classList.remove('selected'));
+  el.classList.add('selected');
+  const customWrap = document.getElementById('op-custom-wrap');
+  if (pct === 'custom') {
+    customWrap.classList.add('visible');
+    selectedOverpayPct = null;
+  } else {
+    customWrap.classList.remove('visible');
+    selectedOverpayPct = pct;
   }
-  refreshBidUI(stageStr, stageIdx);
+  refreshBidPanel();
 }
 
-function refreshBidUI(stageStr, stageIdx) {
-  const inputEl = document.getElementById('jack-amount-input');
-  const btn     = document.getElementById('jack-btn');
-  const usdEl   = document.getElementById('jack-usd');
-  if (!inputEl || !btn) return;
+function updateBidInput(minAskEth, stageStr, stageIdx) {
+  currentMinAskEth = minAskEth;
+  // default radio to stage minimum
+  const stageDefaultPct = {'dormant':20,'sprouting':30,'harvest':50}[stageStr] || 20;
+  // find and select matching radio
+  document.querySelectorAll('.op-opt').forEach(el => {
+    const p = el.dataset.pct;
+    if (p !== 'custom' && parseInt(p) === stageDefaultPct) {
+      el.classList.add('selected');
+    } else if (p !== 'custom') {
+      el.classList.remove('selected');
+    }
+  });
+  selectedOverpayPct = stageDefaultPct;
+  document.getElementById('op-custom-wrap').classList.remove('visible');
+  refreshBidPanel(stageStr, stageIdx);
+}
+
+function refreshBidPanel(stageStr, stageIdx) {
+  const btn = document.getElementById('jack-btn');
+  if (!btn) return;
+  stageStr  = stageStr  || document.getElementById('body').dataset.stage;
+  stageIdx  = stageIdx  !== undefined ? stageIdx : STAGE_NAMES.indexOf(stageStr);
 
   if (stageStr === 'boil') {
-    inputEl.disabled = true;
+    btn.textContent = '🔒 Jacking Closed';
+    btn.disabled = true;
+    window._currentBidEth = 0;
     return;
   }
-  inputEl.disabled = false;
 
-  const val    = parseFloat(inputEl.value) || 0;
-  const minEth = currentMinAskEth;
-  const isUnder = val < minEth - 0.000001;
-  const isOver  = val > minEth + 0.000001;
+  // Determine bid ETH
+  let bidEth = 0;
+  if (selectedOverpayPct !== null) {
+    bidEth = currentMinAskEth * (1 + selectedOverpayPct / 100);
+    // But min is at exactly currentMinAskEth (which already includes the stage %)
+    bidEth = Math.max(currentMinAskEth, bidEth);
+  } else {
+    // custom
+    const customInput = document.getElementById('op-custom-input');
+    bidEth = parseFloat(customInput?.value) || 0;
+  }
+  window._currentBidEth = bidEth;
 
-  inputEl.classList.toggle('under-min', isUnder);
-  inputEl.classList.toggle('over-min',  isOver && !isUnder);
+  // Update totals
+  const totalEl   = document.getElementById('bid-total-eth');
+  const totalUsd  = document.getElementById('bid-total-usd');
+  const earnEl    = document.getElementById('bid-earnout-eth');
+  const earnUsd   = document.getElementById('bid-earnout-usd');
 
-  if (isUnder || val === 0) {
+  if (bidEth > 0 && bidEth >= currentMinAskEth - 0.000001) {
+    totalEl.textContent = bidEth.toFixed(4) + ' ETH';
+    if (ethPrice > 0) totalUsd.textContent = '≈ $' + Math.round(bidEth * ethPrice).toLocaleString();
+
+    // Earnout: seller gets sellerBps% of base (after 2% creator fee extraction)
+    const creatorFee = bidEth * CREATOR_FEE_BPS / (10000 + CREATOR_FEE_BPS);
+    const base = bidEth - creatorFee;
+    const sellerAmt = base * SELLER_BPS[stageIdx >= 0 ? stageIdx : 0] / 10000;
+    earnEl.textContent  = sellerAmt.toFixed(4) + ' ETH';
+    if (ethPrice > 0) earnUsd.textContent = '≈ $' + Math.round(sellerAmt * ethPrice).toLocaleString();
+
+    btn.textContent = `⚡ Jack for ${bidEth.toFixed(4)} ETH`;
+    btn.disabled = false;
+  } else {
+    totalEl.textContent = '—';
+    totalUsd.textContent = '';
+    earnEl.textContent  = '—';
+    earnUsd.textContent = '';
     btn.textContent = '⚡ Jack';
     btn.disabled = true;
-  } else {
-    btn.textContent = `⚡ Jack for ${val.toFixed(4)} ETH`;
-    btn.disabled = false;
-  }
-
-  // USD / info line
-  const usdStr = ethPrice > 0 ? '≈ $' + Math.round(val * ethPrice).toLocaleString() + ' · ' : '';
-  if (isUnder) {
-    usdEl.textContent = `Min: ${minEth.toFixed(4)} ETH · must overpay +${({'dormant':'20','sprouting':'30','harvest':'50'}[stageStr]||'?')}%`;
-  } else if (isOver && stageIdx >= 0) {
-    const pct = ((val / minEth - 1) * 100).toFixed(1);
-    const creatorFee = val * CREATOR_FEE_BPS / (10000 + CREATOR_FEE_BPS);
-    const base = val - creatorFee;
-    const sellerAmt = base * SELLER_BPS[stageIdx] / 10000;
-    const sellerStr = ethPrice > 0 ? '$' + Math.round(sellerAmt * ethPrice).toLocaleString() : sellerAmt.toFixed(4) + ' ETH';
-    usdEl.textContent = `${usdStr}overpaying +${pct}% · seller gets ${sellerStr}`;
-  } else {
-    const overpayPct = {'dormant':'20','sprouting':'30','harvest':'50'}[stageStr] || '?';
-    usdEl.textContent = `${usdStr}${stageStr.charAt(0).toUpperCase()+stageStr.slice(1)} · min +${overpayPct}% above last price`;
   }
 }
 
@@ -2471,11 +2712,10 @@ async function doJack() {
     const c = new ethers.Contract(GAME_ADDRESS, GAME_ABI, signer);
     const minAsk = await readContract.minNextAsk();
 
-    // Use user's custom bid if set and valid, otherwise use minimum
-    const inputEl = document.getElementById('jack-amount-input');
-    const inputVal = inputEl ? parseFloat(inputEl.value) : 0;
-    const bidWei = (inputVal > 0 && ethers.parseEther(inputVal.toFixed(6)) >= minAsk)
-      ? ethers.parseEther(inputVal.toFixed(6))
+    // Use selected bid (from radio overpay) or minimum ask
+    const bidEth = window._currentBidEth || 0;
+    const bidWei = (bidEth > 0 && ethers.parseEther(bidEth.toFixed(6)) >= minAsk)
+      ? ethers.parseEther(bidEth.toFixed(6))
       : minAsk;
 
     btn.textContent = 'Confirm in wallet…';
@@ -2551,11 +2791,11 @@ document.querySelector('.connect-btn').onclick = connectWallet;
 document.getElementById('jack-btn').onclick    = doJack;
 document.querySelector('.vote-btn').onclick    = doVote;
 
-// Bid input — live refresh of button/USD/split as user types
-document.getElementById('jack-amount-input')?.addEventListener('input', function() {
+// Custom bid input — live refresh as user types
+document.getElementById('op-custom-input')?.addEventListener('input', function() {
   const stageStr = document.getElementById('body').dataset.stage;
   const stageIdx = STAGE_NAMES.indexOf(stageStr);
-  refreshBidUI(stageStr, stageIdx);
+  refreshBidPanel(stageStr, stageIdx);
 });
 
 init();
