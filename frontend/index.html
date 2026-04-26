@@ -1772,6 +1772,9 @@ canvas#growth-canvas {
 .call-stage-opt.selected-dormant   { background: rgba(168,124,82,0.12); border-color: rgba(168,124,82,0.45); }
 .call-stage-opt.selected-sprouting { background: rgba(93,187,106,0.12); border-color: rgba(93,187,106,0.45); }
 .call-stage-opt.selected-harvest   { background: rgba(229,167,0,0.12);  border-color: rgba(229,167,0,0.45); }
+.call-stage-opt.selected-boil      { background: rgba(255,51,0,0.12);   border-color: rgba(255,51,0,0.5); }
+#call-opt-boil { border-style: dashed; } /* dashed = "no jack" outcome */
+#call-opt-boil.selected-boil { border-style: solid; }
 .call-stage-emoji { font-size: 20px; display: block; margin-bottom: 4px; }
 .call-stage-name {
   font-family: 'Black Ops One', sans-serif;
@@ -1790,6 +1793,7 @@ canvas#growth-canvas {
 .call-stage-opt.selected-dormant   .call-stage-name { color: #A87C52; }
 .call-stage-opt.selected-sprouting .call-stage-name { color: var(--green); }
 .call-stage-opt.selected-harvest   .call-stage-name { color: #E5A700; }
+.call-stage-opt.selected-boil      .call-stage-name { color: #FF5533; }
 .call-input-row {
   display: flex;
   gap: 8px;
@@ -2125,7 +2129,7 @@ canvas#growth-canvas {
       <div class="spec-card-tag call">🎯 Predict</div>
       <div class="spec-card-title">The Call</div>
       <div class="spec-card-body">
-        Predict which stage the next jack happens in. If you call it right, <strong>you split 80% of the side pot</strong> with everyone else who called correctly. The remaining 20% seeds the main jackpot.
+        Predict which stage the next jack happens in — or call The Boil if you think nobody will jack at all. If you call it right, <strong>you split 80% of the side pot</strong> with everyone who called correctly. The remaining 20% seeds the jackpot.
       </div>
 
       <div class="call-stages">
@@ -2143,6 +2147,11 @@ canvas#growth-canvas {
           <span class="call-stage-emoji">🌾</span>
           <div class="call-stage-name">Harvest</div>
           <div class="call-stage-pool" id="call-pool-harvest">0.000 ETH</div>
+        </div>
+        <div class="call-stage-opt" id="call-opt-boil" onclick="selectCall('boil')">
+          <span class="call-stage-emoji">🔥</span>
+          <div class="call-stage-name">The Boil</div>
+          <div class="call-stage-pool" id="call-pool-boil">0.000 ETH</div>
         </div>
       </div>
 
@@ -3207,7 +3216,7 @@ let selectedCallStage = null;
 
 function selectCall(stage) {
   selectedCallStage = stage;
-  ['dormant','sprouting','harvest'].forEach(s => {
+  ['dormant','sprouting','harvest','boil'].forEach(s => {
     const el = document.getElementById('call-opt-' + s);
     if (!el) return;
     el.className = 'call-stage-opt' + (s === stage ? ' selected-' + s : '');
