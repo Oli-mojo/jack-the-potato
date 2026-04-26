@@ -314,12 +314,15 @@ nav {
 [data-stage="boil"].potato-glow-bg { background: radial-gradient(ellipse at 50% 40%, rgba(255,51,0,0.2) 0%, transparent 70%); }
 
 .potato-emoji {
-  font-size: 96px;
-  line-height: 1;
+  width: 220px;
+  height: 220px;
   display: block;
+  margin: 0 auto;
+  object-fit: contain;
+  border-radius: 16px;
   position: relative;
   animation: float-potato 4s ease-in-out infinite;
-  transition: filter .5s;
+  transition: filter .5s, opacity .4s;
 }
 [data-stage="dormant"]   .potato-emoji { filter: drop-shadow(0 0 20px rgba(168,124,82,0.5)); animation-duration: 5s; }
 [data-stage="sprouting"] .potato-emoji { filter: drop-shadow(0 0 24px rgba(93,187,106,0.6)); animation-duration: 3.5s; }
@@ -1221,7 +1224,7 @@ footer {
         <div class="stage-badge" id="stage-badge">🌱 Sprouting · min +30%</div>
       </div>
 
-      <span class="potato-emoji" id="potato-emoji">🥔</span>
+      <img class="potato-emoji" id="potato-emoji" src="https://gateway.pinata.cloud/ipfs/QmWtJRTidnqGcR77W7NJ6fkZmm57hrZWbLmQH9bUCov9aA" alt="Jack the Potato" />
       <div class="potato-stage-name" id="stage-name">SPROUTING</div>
       <div class="potato-stage-sub" id="stage-sub">Day 14 of 30 · eyes are opening</div>
 
@@ -1671,7 +1674,8 @@ function setStage(stage) {
 
   const s = STAGES[stage];
   document.getElementById('stage-badge').textContent   = s.badge;
-  document.getElementById('potato-emoji').textContent   = s.emoji;
+  const heroImg = document.getElementById('potato-emoji');
+  if (HERO_IMAGES[stage]) heroImg.src = HERO_IMAGES[stage];
   document.getElementById('stage-name').textContent     = s.name;
   document.getElementById('stage-sub').textContent      = s.sub;
   document.getElementById('tracker-next').textContent   = s.trackerNext;
@@ -1970,6 +1974,14 @@ async function connectWallet() {
     await loadContractData(); // refresh to detect if connected wallet is holder
   } catch(e) { console.error('Wallet error:', e); }
 }
+
+// ── HERO IMAGES (stage-reactive) ─────────────────────────────────────────────
+const HERO_IMAGES = {
+  dormant:   'https://gateway.pinata.cloud/ipfs/QmWtJRTidnqGcR77W7NJ6fkZmm57hrZWbLmQH9bUCov9aA',
+  sprouting: 'https://gateway.pinata.cloud/ipfs/QmZsaaiSXZLtz3DfZeWgyfGKUCSEqQkb2hVP9MPSnsEkqG',
+  harvest:   'https://gateway.pinata.cloud/ipfs/QmZFWd3TxEbizAYUNocTyaZaNq1ZcwenZkfRTMAEKCur2c',
+  boil:      'https://gateway.pinata.cloud/ipfs/QmUZ9GhGwytpzJCooQL8s5gD9JeqxdF52DMYHhuy3f3qEX',
+};
 
 // ── JACK THE POTATO ──────────────────────────────────────────────────────────
 const SOUVENIR_ADDRESS = '0xe3b8D57012fA84d42f52ADb14c3C63f1E67868DC';

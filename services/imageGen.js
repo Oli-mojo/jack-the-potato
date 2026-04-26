@@ -49,11 +49,11 @@ const EPIC_BACKGROUNDS = [
 // ─── Accessories — Male ───────────────────────────────────────────────────────
 
 const COMMON_ACCESSORIES = [
-  'wearing a faded red bandana around the neck',
-  'wearing a dusty old cowboy hat slightly too big',
-  'wearing a simple cloth bandana across the face',
-  'wearing a beat-up straw hat and a bandana',
-  'wearing a worn leather vest and a neck kerchief',
+  'wearing a faded yellow bandana tied loosely around the neck below the chin, dusty old cowboy hat slightly too big',
+  'wearing a dusty old cowboy hat slightly too big, a teal cloth bandana knotted around the neck',
+  'wearing a beat-up straw hat, an orange bandana tied around the neck below the chin',
+  'wearing a worn leather hat and a faded green bandana knotted loosely at the neck',
+  'wearing a patched cowboy hat and a purple bandana tied around the neck',
 ];
 
 const UNCOMMON_ACCESSORIES = [
@@ -162,17 +162,17 @@ function buildPrompt(rarity) {
 
   switch (rarity) {
     case 'common':
-      return `a JACKPOTATO cartoon character, young scrappy potato bandit, small and rough around the edges, big innocent eyes, rosy cheeks, ${pick(COMMON_ACCESSORIES)}, ${pick(COMMON_BACKGROUNDS)}, ${isSmug ? smugExpression : 'nervous but defiant expression'}, flat cartoon illustration style`;
+      return `a JACKPOTATO cartoon character, young potato bandit, small round potato body, rosy cheeks, big innocent eyes, ${pick(COMMON_ACCESSORIES)}, seated firmly on ${pick(['cracked dry desert earth', 'a dusty rock', 'sun-baked ground'])}, ${isSmug ? smugExpression : 'nervous but defiant expression'}, flat cartoon illustration style`;
     case 'uncommon':
-      return `a JACKPOTATO cartoon character, potato outlaw on the run, getting the hang of the outlaw life, ${pick(UNCOMMON_ACCESSORIES)}, ${pick(UNCOMMON_BACKGROUNDS)}, ${isSmug ? smugExpression : 'cautious shifty expression'}, flat cartoon illustration style`;
+      return `a JACKPOTATO cartoon character, potato outlaw gaining confidence, round potato body, ${pick(UNCOMMON_ACCESSORIES)}, standing on ${pick(['rocky ground at dusk', 'a dusty frontier trail', 'gravel by a canyon wall'])}, ${isSmug ? smugExpression : 'cautious shifty expression'}, flat cartoon illustration style`;
     case 'rare':
-      return `a JACKPOTATO cartoon character, known potato outlaw with a reputation, golden shimmer to the skin, ${pick(RARE_ACCESSORIES)}, ${pick(RARE_BACKGROUNDS)}, ${isSmug ? smugExpression : 'cool dangerous confidence'}, flat cartoon illustration style, weathered and regal`;
+      return `a JACKPOTATO cartoon character, known potato outlaw with a reputation, golden shimmer to the skin, round potato body, ${pick(RARE_ACCESSORIES)}, standing on ${pick(['a mesa ledge at sunset', 'rocky ground under an orange sky', 'dry earth at golden hour'])}, ${isSmug ? smugExpression : 'cool dangerous confidence'}, flat cartoon illustration style`;
     case 'epic':
-      return `a JACKPOTATO cartoon character, notorious potato bandit, most wanted in the territory, engulfed in roaring flames, ${pick(EPIC_ACCESSORIES)}, ${pick(EPIC_BACKGROUNDS)}, ${isSmug ? smugExpression : 'fierce unstoppable energy'}, flat cartoon illustration style`;
+      return `a JACKPOTATO cartoon character, notorious potato bandit, round potato body, engulfed in roaring flames, ${pick(EPIC_ACCESSORIES)}, standing on scorched ground, fire raging behind, ${isSmug ? smugExpression : 'fierce unstoppable energy'}, flat cartoon illustration style`;
     case 'legendary':
-      return `a JACKPOTATO cartoon character, the most wanted potato outlaw in the whole West, skin almost entirely charred and cracked like cooling lava, ${pick(LEGENDARY_ACCESSORIES)}, ${isSmug ? smugExpression : 'impossibly smug legendary outlaw gaze'}`;
+      return `a JACKPOTATO cartoon character, the most wanted potato outlaw in the whole West, round potato body, skin almost entirely charred and cracked like cooling lava with glowing orange fissures, ${pick(LEGENDARY_ACCESSORIES)}, standing on scorched earth, ${isSmug ? smugExpression : 'impossibly smug legendary outlaw gaze'}`;
     default:
-      return `a JACKPOTATO cartoon character, potato bandit, ${pick(COMMON_BACKGROUNDS)}, flat cartoon illustration style`;
+      return `a JACKPOTATO cartoon character, potato bandit, round potato body, ${pick(COMMON_BACKGROUNDS)}, flat cartoon illustration style`;
   }
 }
 
