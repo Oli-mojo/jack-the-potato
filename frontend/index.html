@@ -293,13 +293,15 @@ nav {
   border-radius: 12px;
   background: var(--card);
   border: 1px solid var(--border);
+  transition: box-shadow .5s;
   overflow: hidden;
   transition: border-color .5s;
 }
-[data-stage="dormant"]   .potato-stage-display { border-color: rgba(168,124,82,0.4); }
-[data-stage="sprouting"] .potato-stage-display { border-color: rgba(93,187,106,0.4); }
-[data-stage="harvest"]   .potato-stage-display { border-color: rgba(229,167,0,0.4); }
-[data-stage="boil"].potato-stage-display { border-color: rgba(255,51,0,0.5); }
+[data-stage="dormant"]   .potato-stage-display { border-color: rgba(168,124,82,0.5); box-shadow: 0 0 40px rgba(168,124,82,0.12), inset 0 0 30px rgba(168,124,82,0.04); }
+[data-stage="sprouting"] .potato-stage-display { border-color: rgba(93,187,106,0.5); box-shadow: 0 0 50px rgba(93,187,106,0.15), inset 0 0 30px rgba(93,187,106,0.05); }
+[data-stage="harvest"]   .potato-stage-display { border-color: rgba(229,167,0,0.5);  box-shadow: 0 0 60px rgba(229,167,0,0.2),  inset 0 0 30px rgba(229,167,0,0.06); }
+[data-stage="boil"]      .potato-stage-display { border-color: rgba(255,51,0,0.6);   box-shadow: 0 0 80px rgba(255,51,0,0.25),  inset 0 0 40px rgba(255,51,0,0.08); animation: boil-pulse .8s ease-in-out infinite alternate; }
+@keyframes boil-pulse { 0%{box-shadow:0 0 60px rgba(255,51,0,0.2)} 100%{box-shadow:0 0 100px rgba(255,51,0,0.4)} }
 
 .potato-glow-bg {
   position: absolute;
@@ -308,10 +310,10 @@ nav {
   pointer-events: none;
   transition: background .6s;
 }
-[data-stage="dormant"]   .potato-glow-bg { background: radial-gradient(ellipse at 50% 40%, rgba(168,124,82,0.12) 0%, transparent 70%); }
-[data-stage="sprouting"] .potato-glow-bg { background: radial-gradient(ellipse at 50% 40%, rgba(93,187,106,0.14) 0%, transparent 70%); }
-[data-stage="harvest"]   .potato-glow-bg { background: radial-gradient(ellipse at 50% 40%, rgba(229,167,0,0.16) 0%, transparent 70%); }
-[data-stage="boil"].potato-glow-bg { background: radial-gradient(ellipse at 50% 40%, rgba(255,51,0,0.2) 0%, transparent 70%); }
+[data-stage="dormant"]   .potato-glow-bg { background: radial-gradient(ellipse at 50% 45%, rgba(168,124,82,0.22) 0%, rgba(168,124,82,0.06) 50%, transparent 75%); }
+[data-stage="sprouting"] .potato-glow-bg { background: radial-gradient(ellipse at 50% 45%, rgba(93,187,106,0.25) 0%, rgba(93,187,106,0.08) 50%, transparent 75%); }
+[data-stage="harvest"]   .potato-glow-bg { background: radial-gradient(ellipse at 50% 45%, rgba(229,167,0,0.28) 0%, rgba(229,167,0,0.09) 50%, transparent 75%); }
+[data-stage="boil"]      .potato-glow-bg { background: radial-gradient(ellipse at 50% 45%, rgba(255,51,0,0.35) 0%, rgba(255,80,0,0.12) 50%, transparent 75%); }
 
 .potato-emoji {
   width: 220px;
@@ -1296,8 +1298,8 @@ footer {
 /* ── PRICE BLOCKS (hero-left) ── */
 .price-blocks {
   display: flex;
-  flex-direction: column;
-  gap: 10px;
+  flex-direction: row;
+  gap: 0;
   margin-top: 4px;
   padding-top: 20px;
   border-top: 0.5px solid var(--border-soft);
@@ -1306,6 +1308,12 @@ footer {
   display: flex;
   flex-direction: column;
   gap: 2px;
+  flex: 1;
+}
+.price-block + .price-block {
+  padding-left: 24px;
+  border-left: 0.5px solid var(--border-soft);
+  margin-left: 24px;
 }
 .pb-label {
   font-family: 'Barlow Condensed', sans-serif;
@@ -1383,7 +1391,9 @@ canvas#growth-canvas {
 
 /* ── OVERPAY RADIOS ── */
 .overpay-section {
-  margin-top: 14px;
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 0.5px solid var(--border-soft);
 }
 .overpay-label {
   font-family: 'Barlow Condensed', sans-serif;
@@ -1451,10 +1461,8 @@ canvas#growth-canvas {
 .bid-total-row {
   display: flex;
   justify-content: space-between;
-  align-items: baseline;
-  margin-top: 10px;
-  padding-top: 10px;
-  border-top: 0.5px solid var(--border-soft);
+  align-items: flex-start;
+  margin-bottom: 2px;
 }
 .bid-total-label {
   font-family: 'Barlow Condensed', sans-serif;
@@ -1477,6 +1485,34 @@ canvas#growth-canvas {
   margin-top: 2px;
   text-align: right;
 }
+.bid-guarantee-badge {
+  display: inline-block;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  background: rgba(126,219,133,0.12);
+  border: 1px solid rgba(126,219,133,0.25);
+  color: var(--green);
+  border-radius: 4px;
+  padding: 1px 6px;
+  margin-top: 3px;
+}
+
+/* ── STAGE CAPTION ── */
+.stage-image-caption {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  color: rgba(255,245,224,0.2);
+  margin-top: 8px;
+  line-height: 1.5;
+}
+[data-stage="dormant"]   .stage-image-caption { color: rgba(168,124,82,0.45); }
+[data-stage="sprouting"] .stage-image-caption { color: rgba(93,187,106,0.45); }
+[data-stage="harvest"]   .stage-image-caption { color: rgba(229,167,0,0.5); }
+[data-stage="boil"]      .stage-image-caption { color: rgba(255,80,0,0.5); }
 
 /* ── SOUVENIR SECTION ── */
 .souvenir-section {
@@ -1612,9 +1648,7 @@ canvas#growth-canvas {
   </div>
   <div class="nav-right">
     <span class="nav-link" onclick="showTab('rules')">How It Works</span>
-    <span class="nav-link" onclick="showTab('stages')">Stages</span>
     <span class="nav-link" onclick="showTab('boil')">The Boil</span>
-    <span class="nav-link" onclick="showTab('spectators')">Spectators</span>
     <button class="connect-btn">Connect Wallet</button>
   </div>
 </nav>
@@ -1632,11 +1666,7 @@ canvas#growth-canvas {
     </div>
     <div class="hero-tagline">PRICE CAN ONLY GO UP. ↑</div>
     <div class="hero-sub">
-      One NFT. Always for sale. <strong>Hold longest, win the jackpot.</strong>
-    </div>
-    <div class="hero-cta">
-      <button class="btn-ghost" onclick="showTab('rules')">How It Works</button>
-      <button class="btn-ghost" onclick="showTab('stages')">The Stages</button>
+      A single-NFT perpetual-auction game on Base. One token exists. It's always for sale. The holder can't refuse — but they're <strong>guaranteed a profit every time they get jacked</strong>. The price can only ever go up.
     </div>
 
     <!-- Price blocks: current price + jackpot -->
@@ -1681,6 +1711,7 @@ canvas#growth-canvas {
       <img class="potato-emoji" id="potato-emoji" src="https://gateway.pinata.cloud/ipfs/QmWtJRTidnqGcR77W7NJ6fkZmm57hrZWbLmQH9bUCov9aA" alt="Jack the Potato" />
       <div class="potato-stage-name" id="stage-name">SPROUTING</div>
       <div class="potato-stage-sub" id="stage-sub">Day 14 of 30 · eyes are opening</div>
+      <div class="stage-image-caption" id="stage-image-caption">The potato's appearance changes as it ages — dormant, sprouting, harvest, then boil.</div>
 
       <div class="throne-holder" style="margin-top:10px;">
         <div class="throne-holder-name" id="holder-name">—</div>
@@ -1692,9 +1723,26 @@ canvas#growth-canvas {
     <!-- Jack panel -->
     <div class="jack-panel">
 
+      <!-- You pay + guaranteed back row -->
+      <div class="bid-total-row">
+        <div>
+          <div class="bid-total-label">You pay</div>
+          <div class="bid-total-eth" id="bid-total-eth">—</div>
+          <div class="bid-total-usd" id="bid-total-usd"></div>
+        </div>
+        <div style="text-align:right;">
+          <div class="bid-total-label">Guaranteed back if jacked</div>
+          <div class="bid-total-eth" id="bid-earnout-eth" style="color:var(--green);">—</div>
+          <div class="bid-guarantee-badge" id="bid-guarantee-badge" style="display:none;"></div>
+          <div class="bid-total-usd" id="bid-earnout-usd"></div>
+        </div>
+      </div>
+
+      <button class="jack-btn" id="jack-btn" style="margin-top:10px;">⚡ Jack</button>
+
       <!-- Overpay selector -->
       <div class="overpay-section">
-        <div class="overpay-label">How much to overpay</div>
+        <div class="overpay-label">Overpay by</div>
         <div class="overpay-radios">
           <div class="op-opt selected" data-pct="20" onclick="selectOverpay(this, 20)">+20%</div>
           <div class="op-opt" data-pct="30" onclick="selectOverpay(this, 30)">+30%</div>
@@ -1706,22 +1754,6 @@ canvas#growth-canvas {
           <span class="op-custom-eth">ETH</span>
         </div>
       </div>
-
-      <!-- Total you pay -->
-      <div class="bid-total-row">
-        <div>
-          <div class="bid-total-label">You pay</div>
-          <div class="bid-total-eth" id="bid-total-eth">—</div>
-          <div class="bid-total-usd" id="bid-total-usd"></div>
-        </div>
-        <div style="text-align:right;">
-          <div class="bid-total-label">Min earnout</div>
-          <div class="bid-total-eth" id="bid-earnout-eth" style="color:var(--green);">—</div>
-          <div class="bid-total-usd" id="bid-earnout-usd"></div>
-        </div>
-      </div>
-
-      <button class="jack-btn" id="jack-btn" style="margin-top:12px;">⚡ Jack</button>
 
       <!-- Split display -->
       <div class="split-display" id="split-display">
@@ -2629,16 +2661,21 @@ function refreshBidPanel(stageStr, stageIdx) {
     totalEl.textContent = bidEth.toFixed(4) + ' ETH';
     if (ethPrice > 0) totalUsd.textContent = '≈ $' + Math.round(bidEth * ethPrice).toLocaleString();
 
-    // Min earnout: next buyer must overpay base by stage minimum, seller gets sellerBps% of that
-    // base = bidEth minus 2% creator fee; nextBase = base × stageMul; earnout = nextBase × sellerBps%
-    const MIN_MULS = [1.20, 1.30, 1.50]; // dormant, sprouting, harvest
+    // Guaranteed back: next buyer must overpay base by stage min, seller gets sellerBps% of that
+    const MIN_MULS = [1.20, 1.30, 1.50];
     const idx = stageIdx >= 0 ? stageIdx : 0;
     const creatorFee = bidEth * CREATOR_FEE_BPS / (10000 + CREATOR_FEE_BPS);
     const base = bidEth - creatorFee;
     const nextBase = base * MIN_MULS[idx];
     const sellerAmt = nextBase * SELLER_BPS[idx] / 10000;
+    const profitPct = Math.round((sellerAmt / bidEth - 1) * 100);
     earnEl.textContent  = sellerAmt.toFixed(4) + ' ETH';
     if (ethPrice > 0) earnUsd.textContent = '≈ $' + Math.round(sellerAmt * ethPrice).toLocaleString();
+    const badge = document.getElementById('bid-guarantee-badge');
+    if (badge) {
+      badge.style.display = 'inline-block';
+      badge.textContent = profitPct > 0 ? `+${profitPct}% profit` : 'breakeven guaranteed';
+    }
 
     btn.textContent = `⚡ Jack for ${bidEth.toFixed(4)} ETH`;
     btn.disabled = false;
@@ -2647,6 +2684,8 @@ function refreshBidPanel(stageStr, stageIdx) {
     totalUsd.textContent = '';
     earnEl.textContent  = '—';
     earnUsd.textContent = '';
+    const badge = document.getElementById('bid-guarantee-badge');
+    if (badge) badge.style.display = 'none';
     btn.textContent = '⚡ Jack';
     btn.disabled = true;
   }
