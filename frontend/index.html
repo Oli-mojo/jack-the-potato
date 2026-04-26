@@ -2174,28 +2174,6 @@ canvas#growth-canvas {
     <div class="res-sub" id="res-sub">loading…</div>
     <div class="res-bar-track"><div class="res-bar-fill" id="res-bar-fill" style="width:0%"></div></div>
 
-    <!-- Vote to Seal — inline in pot section -->
-    <div style="margin-top:16px;padding:14px 16px;background:rgba(155,121,245,0.07);border:1px solid rgba(155,121,245,0.2);border-radius:10px;">
-      <div style="font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:rgba(155,121,245,0.7);margin-bottom:6px;">🗳️ Force The Boil Early</div>
-      <div style="font-family:'Barlow',sans-serif;font-size:12px;color:rgba(255,245,224,0.5);line-height:1.65;margin-bottom:10px;">
-        Stake ETH toward triggering The Boil. Once the collective spectator stake hits <strong style="color:var(--cream);">10% of the current Pot</strong>, jacking stops immediately — whoever is holding has won.
-      </div>
-      <div class="spec-threshold-bar" style="margin-bottom:10px;">
-        <div class="spec-threshold-label">
-          <span style="color:rgba(255,245,224,0.4);">Spectator stake vs. 10% threshold</span>
-          <span style="color:var(--pot);" id="vote-threshold-label">$42 / $125 needed</span>
-        </div>
-        <div class="spec-threshold-track">
-          <div class="spec-threshold-fill" id="vote-threshold-fill"></div>
-        </div>
-      </div>
-      <div class="vote-input-row">
-        <input class="vote-input" id="vote-input-main" type="text" placeholder="0.05 ETH" />
-        <button class="vote-btn" onclick="doVoteBoil('vote-input-main')">Vote to Seal</button>
-      </div>
-      <div style="font-family:'Barlow Condensed',sans-serif;font-size:9px;color:rgba(255,245,224,0.2);margin-top:6px;letter-spacing:0.04em;">Your stake goes to the Pot whether or not the threshold is reached.</div>
-    </div>
-
     <div class="res-detail" style="margin-top:14px;">
       Grows with every jack (15–30% of sale), every seed, and 20% of every Call bet. Hold when The Boil fires to claim 85%.
     </div>
@@ -2365,7 +2343,7 @@ canvas#growth-canvas {
     <div class="ls-card">
       <div class="ls-title">🕯️ The Boil</div>
       <div class="ls-body">
-        <p>Every season ends with a <strong>The Boil</strong>. It can be triggered two ways: 15 consecutive days pass without anyone jacking the potato, or spectators collectively stake enough to force it early.</p>
+        <p>Every season ends with a <strong>The Boil</strong>. It fires when 15 consecutive days pass without anyone jacking the potato.</p>
         <p>When The Boil fires, <strong>jacking stops immediately</strong>. No more buying. Whoever is holding the potato at that moment has won — they just have to wait 48 hours for the payout to be unlocked. The 48-hour window is purely a safety buffer before anyone can call the payout function.</p>
         <p>After 48 hours, anyone can trigger the payout. The Pot pays out flat:</p>
         <div class="seal-split-row">
@@ -2391,12 +2369,6 @@ canvas#growth-canvas {
         <div class="ls-trigger-label" style="color:var(--orange);">⏳ Timer Path</div>
         <div class="ls-trigger-body">
           <strong>15 days pass without a jack.</strong> The holder proved they could outlast the market. The Boil fires automatically — jacking stops immediately and they've won. The 48-hour safety window opens before the payout can be called.
-        </div>
-      </div>
-      <div class="ls-trigger" style="background:rgba(155,121,245,0.05);border-color:rgba(155,121,245,0.2);">
-        <div class="ls-trigger-label" style="color:var(--pot);">👁 Spectator Path</div>
-        <div class="ls-trigger-body">
-          <strong>Spectators collectively stake ≥10% of the Pot</strong> and vote to seal early. Real skin in the game — their stake goes toward the Pot when they vote. Gives spectators genuine power to end a season they think is ripe.
         </div>
       </div>
     </div>
@@ -2643,7 +2615,6 @@ const GAME_ABI = [
   'function jackCount() view returns (uint256)',
   'function seasonNumber() view returns (uint256)',
   'function jackPotato() payable',
-  'function voteBoil() payable',
   'function pokeBoil()',
 ];
 
@@ -3262,20 +3233,6 @@ async function doJack() {
   }
 }
 
-// ── VOTE BOIL ────────────────────────────────────────────────────────────────
-async function doVoteBoil(inputId) {
-  if (!signer) { await connectWallet(); return; }
-  const el = document.getElementById(inputId || 'vote-input-main');
-  const val = el ? el.value : '';
-  if (!val || isNaN(val)) return alert('Enter a valid ETH amount');
-  try {
-    const c = new ethers.Contract(GAME_ADDRESS, GAME_ABI, signer);
-    const tx = await c.voteBoil({ value: ethers.parseEther(val) });
-    await tx.wait();
-    await loadContractData();
-  } catch(e) { console.error('Vote error:', e); }
-}
-async function doVote() { return doVoteBoil('vote-input-main'); }
 
 // ── HELPERS ──────────────────────────────────────────────────────────────────
 function formatDuration(secs) {
@@ -3299,7 +3256,6 @@ function showTab(id) {
 // ── WIRE UP ──────────────────────────────────────────────────────────────────
 document.querySelector('.connect-btn').onclick = connectWallet;
 document.getElementById('jack-btn').onclick    = doJack;
-document.querySelector('.vote-btn')?.addEventListener('click', doVote);
 
 // Custom bid input — live refresh as user types
 document.getElementById('op-custom-input')?.addEventListener('input', function() {
