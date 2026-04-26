@@ -1132,6 +1132,87 @@ footer {
 .pill-green  { background: rgba(126,219,133,0.12); color: var(--green);   border: 1px solid rgba(126,219,133,0.25); }
 .pill-violet { background: rgba(196,181,244,0.1);  color: var(--violet);  border: 1px solid rgba(196,181,244,0.22); }
 .pill-pot{ background: rgba(155,121,245,0.1);  color: var(--pot); border: 1px solid rgba(155,121,245,0.25); }
+
+/* ── HERO TITLE "the" ── */
+.hero-title .the-word {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 38px;
+  color: var(--green);
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  line-height: 1;
+  vertical-align: middle;
+}
+
+/* ── PRICE TRAJECTORY ── */
+.price-trajectory {
+  background: rgba(255,245,224,0.02);
+  border: 1px solid var(--border-soft);
+  border-radius: 8px;
+  padding: 11px 14px;
+  margin-bottom: 2px;
+}
+.traj-label {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(255,245,224,0.28);
+  margin-bottom: 9px;
+  display: flex;
+  justify-content: space-between;
+}
+.traj-hint {
+  color: rgba(255,245,224,0.16);
+  text-transform: none;
+  letter-spacing: 0;
+  font-weight: 400;
+  font-family: 'Barlow', sans-serif;
+  font-size: 9px;
+}
+.traj-stages {
+  display: flex;
+  align-items: flex-start;
+  gap: 2px;
+}
+.traj-stage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  flex: 1;
+}
+.traj-arrow {
+  font-size: 9px;
+  color: rgba(255,245,224,0.12);
+  flex-shrink: 0;
+  padding-top: 6px;
+}
+.traj-emoji { font-size: 13px; }
+.traj-price {
+  font-family: 'Black Ops One', sans-serif;
+  font-size: 10px;
+  color: rgba(255,245,224,0.3);
+  line-height: 1.2;
+  text-align: center;
+  white-space: nowrap;
+}
+.traj-name {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: rgba(255,245,224,0.18);
+  text-align: center;
+}
+.traj-stage.traj-past   .traj-price { color: rgba(168,124,82,0.45); }
+.traj-stage.traj-past   .traj-name  { color: rgba(168,124,82,0.35); }
+.traj-stage.traj-current .traj-price { color: var(--yellow); }
+.traj-stage.traj-current .traj-name  { color: rgba(255,245,224,0.55); }
+.traj-stage.traj-win    .traj-price { color: var(--pot); }
+.traj-stage.traj-win    .traj-name  { color: rgba(155,121,245,0.6); }
 </style>
 </head>
 <body id="body" data-stage="sprouting">
@@ -1187,12 +1268,11 @@ footer {
       Live on Base · Jack #8
     </div>
     <div class="hero-title">
-      JACK THE<br><span class="accent">POTATO</span> 🔥
+      JACK <span class="the-word">the</span><br><span class="accent">POTATO</span>
     </div>
     <div class="hero-tagline">PRICE CAN ONLY GO UP. ↑</div>
     <div class="hero-sub">
-      One NFT. Always for sale. The price can only go up.<br>
-      <strong>Last one holding it wins the jackpot.</strong>
+      One NFT. Always for sale. <strong>Hold longest, win the jackpot.</strong>
     </div>
     <div class="hero-cta">
       <button class="btn-ghost" onclick="showTab('rules')">How It Works</button>
@@ -1200,8 +1280,8 @@ footer {
     </div>
     <div class="hero-kpis">
       <div class="kpi">
-        <div class="kpi-val" id="kpi-pot" style="color:var(--pot);">—</div>
-        <div class="kpi-label">Season Jackpot</div>
+        <div class="kpi-val" id="kpi-held">—</div>
+        <div class="kpi-label">Held For</div>
       </div>
       <div class="kpi">
         <div class="kpi-val" id="kpi-price" style="color:var(--yellow);">—</div>
@@ -1286,6 +1366,39 @@ footer {
         <div class="jackpot-callout-right">
           <div class="jackpot-callout-label">If you win it</div>
           <div class="jackpot-callout-payout" id="callout-payout">— <span>→ you (85%)</span></div>
+        </div>
+      </div>
+
+      <!-- Price trajectory -->
+      <div class="price-trajectory" id="price-trajectory">
+        <div class="traj-label">
+          <span>Price Trajectory</span>
+          <span class="traj-hint">minimum to jack at each stage</span>
+        </div>
+        <div class="traj-stages">
+          <div class="traj-stage" id="traj-dormant">
+            <span class="traj-emoji">🥔</span>
+            <span class="traj-price" id="traj-dormant-price">—</span>
+            <span class="traj-name">Dormant</span>
+          </div>
+          <div class="traj-arrow">›</div>
+          <div class="traj-stage" id="traj-sprouting">
+            <span class="traj-emoji">🌱</span>
+            <span class="traj-price" id="traj-sprout-price">—</span>
+            <span class="traj-name">Sprouting</span>
+          </div>
+          <div class="traj-arrow">›</div>
+          <div class="traj-stage" id="traj-harvest">
+            <span class="traj-emoji">🌾</span>
+            <span class="traj-price" id="traj-harvest-price">—</span>
+            <span class="traj-name">Harvest</span>
+          </div>
+          <div class="traj-arrow">›</div>
+          <div class="traj-stage traj-win">
+            <span class="traj-emoji">🏆</span>
+            <span class="traj-price" id="traj-win-price">—</span>
+            <span class="traj-name">Win</span>
+          </div>
         </div>
       </div>
 
@@ -1823,7 +1936,7 @@ async function loadContractData() {
       `<div class="pulse-dot"></div> Live on Base Sepolia &nbsp;·&nbsp; Jack #${Number(jackCountVal)}`;
 
     // KPIs
-    document.getElementById('kpi-pot').textContent   = fmt(potEth);
+    document.getElementById('kpi-held').textContent  = formatDuration(holdSecs);
     document.getElementById('kpi-price').textContent = lastPriceEth.toFixed(4) + ' ETH';
     document.getElementById('kpi-jacks').textContent = Number(jackCountVal).toString();
 
@@ -1917,6 +2030,9 @@ async function loadContractData() {
     // Stage tracker pips (reuse existing setStage logic)
     updateStagePips(stageStr);
 
+    // Price trajectory
+    updateTrajectory(lastPriceEth, stageStr, potEth);
+
   } catch(e) {
     console.error('Contract read error:', e);
   }
@@ -1939,6 +2055,51 @@ function updateStagePips(stageStr) {
   conns[1].className = 'stage-connector' + (idx > 1 ? ' done' : '');
   names.forEach((n,i) => { n.className = 'stage-name ' + (i < idx ? 'done' : i===idx&&idx<3?'live':''); });
   overpays.forEach((o,i) => { o.className = 'stage-overpay ' + (i < idx ? 'done' : i===idx&&idx<3?'live':''); });
+}
+
+// ── PRICE TRAJECTORY ────────────────────────────────────────────────────────
+function updateTrajectory(lastPriceEth, stageStr, potEth) {
+  const fmtEth = (eth) => eth < 0.001
+    ? (eth * 1000).toFixed(2) + 'm'
+    : eth.toFixed(3);
+
+  const dormantMin = lastPriceEth * 1.2;
+  const sproutMin  = lastPriceEth * 1.3;
+  const harvestMin = lastPriceEth * 1.5;
+  const winVal     = potEth * 0.85;
+
+  const stageOrder = ['dormant', 'sprouting', 'harvest', 'boil'];
+  const currentIdx = stageOrder.indexOf(stageStr);
+
+  const trajData = [
+    { id: 'traj-dormant',   priceId: 'traj-dormant-price', price: dormantMin, key: 'dormant',   idx: 0 },
+    { id: 'traj-sprouting', priceId: 'traj-sprout-price',  price: sproutMin,  key: 'sprouting', idx: 1 },
+    { id: 'traj-harvest',   priceId: 'traj-harvest-price', price: harvestMin, key: 'harvest',   idx: 2 },
+  ];
+
+  trajData.forEach(({ id, priceId, price, key, idx }) => {
+    const node = document.getElementById(id);
+    if (!node) return;
+    document.getElementById(priceId).textContent = fmtEth(price) + ' ETH';
+    node.classList.remove('traj-past', 'traj-current');
+    if (idx < currentIdx || stageStr === 'boil') {
+      node.classList.add('traj-past');
+    } else if (key === stageStr) {
+      node.classList.add('traj-current');
+    }
+  });
+
+  // Win value
+  const winNode = document.querySelector('.traj-win .traj-price');
+  if (winNode) {
+    winNode.textContent = ethPrice > 0
+      ? '$' + Math.round(winVal * ethPrice).toLocaleString()
+      : fmtEth(winVal) + ' ETH';
+  }
+
+  // Hide trajectory when boil (jacking closed)
+  const traj = document.getElementById('price-trajectory');
+  if (traj) traj.style.display = stageStr === 'boil' ? 'none' : 'block';
 }
 
 // ── WALLET CONNECT ───────────────────────────────────────────────────────────
