@@ -1149,8 +1149,8 @@ footer {
   background: rgba(255,245,224,0.02);
   border: 1px solid var(--border-soft);
   border-radius: 8px;
-  padding: 11px 14px;
-  margin-bottom: 2px;
+  padding: 12px 16px;
+  margin-top: 4px;
 }
 .traj-label {
   font-family: 'Barlow Condensed', sans-serif;
@@ -1189,10 +1189,10 @@ footer {
   flex-shrink: 0;
   padding-top: 6px;
 }
-.traj-emoji { font-size: 13px; }
+.traj-emoji { font-size: 16px; }
 .traj-price {
   font-family: 'Black Ops One', sans-serif;
-  font-size: 10px;
+  font-size: 12px;
   color: rgba(255,245,224,0.3);
   line-height: 1.2;
   text-align: center;
@@ -1200,7 +1200,7 @@ footer {
 }
 .traj-name {
   font-family: 'Barlow Condensed', sans-serif;
-  font-size: 8px;
+  font-size: 9px;
   font-weight: 700;
   letter-spacing: 0.05em;
   text-transform: uppercase;
@@ -1292,6 +1292,39 @@ footer {
         <div class="kpi-label">Total Jacks</div>
       </div>
     </div>
+
+    <!-- Price trajectory in hero-left -->
+    <div class="price-trajectory" id="price-trajectory">
+      <div class="traj-label">
+        <span>Price Trajectory</span>
+        <span class="traj-hint">min to jack at each stage</span>
+      </div>
+      <div class="traj-stages">
+        <div class="traj-stage" id="traj-dormant">
+          <span class="traj-emoji">🥔</span>
+          <span class="traj-price" id="traj-dormant-price">—</span>
+          <span class="traj-name">Dormant</span>
+        </div>
+        <div class="traj-arrow">›</div>
+        <div class="traj-stage" id="traj-sprouting">
+          <span class="traj-emoji">🌱</span>
+          <span class="traj-price" id="traj-sprout-price">—</span>
+          <span class="traj-name">Sprouting</span>
+        </div>
+        <div class="traj-arrow">›</div>
+        <div class="traj-stage" id="traj-harvest">
+          <span class="traj-emoji">🌾</span>
+          <span class="traj-price" id="traj-harvest-price">—</span>
+          <span class="traj-name">Harvest</span>
+        </div>
+        <div class="traj-arrow">›</div>
+        <div class="traj-stage traj-win">
+          <span class="traj-emoji">🏆</span>
+          <span class="traj-price" id="traj-win-price">—</span>
+          <span class="traj-name">Win</span>
+        </div>
+      </div>
+    </div>
   </div>
 
   <!-- RIGHT: Potato + jack panel -->
@@ -1369,39 +1402,6 @@ footer {
         </div>
       </div>
 
-      <!-- Price trajectory -->
-      <div class="price-trajectory" id="price-trajectory">
-        <div class="traj-label">
-          <span>Price Trajectory</span>
-          <span class="traj-hint">minimum to jack at each stage</span>
-        </div>
-        <div class="traj-stages">
-          <div class="traj-stage" id="traj-dormant">
-            <span class="traj-emoji">🥔</span>
-            <span class="traj-price" id="traj-dormant-price">—</span>
-            <span class="traj-name">Dormant</span>
-          </div>
-          <div class="traj-arrow">›</div>
-          <div class="traj-stage" id="traj-sprouting">
-            <span class="traj-emoji">🌱</span>
-            <span class="traj-price" id="traj-sprout-price">—</span>
-            <span class="traj-name">Sprouting</span>
-          </div>
-          <div class="traj-arrow">›</div>
-          <div class="traj-stage" id="traj-harvest">
-            <span class="traj-emoji">🌾</span>
-            <span class="traj-price" id="traj-harvest-price">—</span>
-            <span class="traj-name">Harvest</span>
-          </div>
-          <div class="traj-arrow">›</div>
-          <div class="traj-stage traj-win">
-            <span class="traj-emoji">🏆</span>
-            <span class="traj-price" id="traj-win-price">—</span>
-            <span class="traj-name">Win</span>
-          </div>
-        </div>
-      </div>
-
       <div class="jack-min-label" style="margin-top:14px;">Minimum Jack Price</div>
       <div class="jack-price" id="jack-price">2.15 ETH</div>
       <div class="jack-price-usd" id="jack-usd">≈ $3,841 · Sprouting requires min +30% above last price</div>
@@ -1410,16 +1410,15 @@ footer {
       <div class="split-display" id="split-display">
         <div class="split-seg split-seller">
           <span class="seg-pct" id="split-seller-pct">80%</span>
-          <span class="seg-label">to Alice</span>
+          <span class="seg-label" id="split-seller-label">→ Seller</span>
         </div>
         <div class="split-seg split-pot">
-          <span class="seg-pct" id="split-pot-pct">18%</span>
+          <span class="seg-pct" id="split-pot-pct">20%</span>
           <span class="seg-label">→ Pot</span>
         </div>
-        <div class="split-seg split-creator">
-          <span class="seg-pct">2%</span>
-          <span class="seg-label">Creator</span>
-        </div>
+      </div>
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:9px;color:rgba(255,245,224,0.25);margin-top:5px;letter-spacing:0.06em;">
+        + 2% creator fee charged on top of purchase price
       </div>
     </div>
   </div>
@@ -1429,9 +1428,9 @@ footer {
 <div class="pot-section">
   <div class="pot-main">
     <div class="res-eyebrow">🏆 Season Jackpot Pot</div>
-    <div class="res-amount">$1,247</div>
-    <div class="res-sub">≈ 0.642 ETH · grows every time the potato is jacked</div>
-    <div class="res-bar-track"><div class="res-bar-fill"></div></div>
+    <div class="res-amount" id="res-amount">—</div>
+    <div class="res-sub" id="res-sub">loading…</div>
+    <div class="res-bar-track"><div class="res-bar-fill" id="res-bar-fill" style="width:0%"></div></div>
     <div class="res-detail">
       <p>A slice of every jack goes straight to the Pot. <strong>The later in the season the jack happens, the bigger that slice</strong> — Harvest stage routes 28% of every sale to the jackpot vs 13% at Dormant. The pot compounds as the game gets more serious.</p>
       <p style="margin-top:10px;">The Pot is locked the moment The Boil fires. Nobody can add to it after that — the jackpot is set, and the only fight is who's holding when the clock runs out.</p>
@@ -1487,7 +1486,7 @@ footer {
       </div>
       <div class="rule-card">
         <div class="rule-card-title">💸 Getting Jacked = Guaranteed Profit</div>
-        <div class="rule-card-body">If you get jacked, you walk away with <strong>70–85% of the sale price</strong> — always more than you paid. You also receive a <strong>Souvenir NFT</strong> immortalising your hold, with rarity based on how long you lasted and when.</div>
+        <div class="rule-card-body">If you get jacked, you walk away with <strong>70–85% of the sale price</strong> — always more than you paid (102–105% guaranteed). You also receive a <strong>Souvenir NFT</strong> immortalising your hold, with rarity based on how long you lasted and when.</div>
       </div>
     </div>
 
@@ -1527,8 +1526,7 @@ footer {
         <div class="stage-card-body">Fresh hold. The potato is just sitting there. The jackpot is in its early days — buyers can still get in at a relatively low barrier. <strong>Min +20% above last price.</strong></div>
         <div class="stage-split-pill">
           <div class="ssp-row ssp-seller"><span class="ssp-pct">85%</span><span class="ssp-who">→ Seller</span></div>
-          <div class="ssp-row ssp-pot"><span class="ssp-pct">13%</span><span class="ssp-who">→ Pot</span></div>
-          <div class="ssp-row ssp-creator"><span class="ssp-pct">2%</span><span class="ssp-who">→ Creator</span></div>
+          <div class="ssp-row ssp-pot"><span class="ssp-pct">15%</span><span class="ssp-who">→ Pot</span></div>
         </div>
       </div>
       <div class="stage-card sprouting">
@@ -1538,8 +1536,7 @@ footer {
         <div class="stage-card-body">Eyes are opening. The hold is getting real. More of each sale now flows into the jackpot — the prize is growing faster. <strong>Min +30% above last price.</strong></div>
         <div class="stage-split-pill">
           <div class="ssp-row ssp-seller"><span class="ssp-pct">80%</span><span class="ssp-who">→ Seller</span></div>
-          <div class="ssp-row ssp-pot"><span class="ssp-pct">18%</span><span class="ssp-who">→ Pot</span></div>
-          <div class="ssp-row ssp-creator"><span class="ssp-pct">2%</span><span class="ssp-who">→ Creator</span></div>
+          <div class="ssp-row ssp-pot"><span class="ssp-pct">20%</span><span class="ssp-who">→ Pot</span></div>
         </div>
       </div>
       <div class="stage-card harvest">
@@ -1549,14 +1546,13 @@ footer {
         <div class="stage-card-body">It's fully ripe. The biggest slice of every sale goes to the Pot. Getting jacked here still guarantees profit — and the Pot gets fat. <strong>Min +50% above last price.</strong></div>
         <div class="stage-split-pill">
           <div class="ssp-row ssp-seller"><span class="ssp-pct">70%</span><span class="ssp-who">→ Seller</span></div>
-          <div class="ssp-row ssp-pot"><span class="ssp-pct">28%</span><span class="ssp-who">→ Pot</span></div>
-          <div class="ssp-row ssp-creator"><span class="ssp-pct">2%</span><span class="ssp-who">→ Creator</span></div>
+          <div class="ssp-row ssp-pot"><span class="ssp-pct">30%</span><span class="ssp-who">→ Pot</span></div>
         </div>
       </div>
     </div>
 
     <div class="seller-always-wins">
-      <strong>Sellers always make a profit — it's guaranteed by the math.</strong> At Dormant stage, the minimum jack price is +20% above what you paid, and you receive 85% of the sale — that's 85% × 120% = 102% of your entry price, every time. At Sprouting it's 80% × 130% = 104%. At Harvest it's 70% × 150% = 105%. No matter when you get jacked, you come out ahead.
+      <strong>Sellers always make a profit — it's guaranteed by the math.</strong> The purchase price splits cleanly: seller + pot = 100%. The creator charges a flat 2% fee on top of the purchase price. So at Dormant (+20% floor), seller gets 85% × 120% = <strong>102%</strong> of what they paid. At Sprouting it's 80% × 130% = <strong>104%</strong>. At Harvest it's 70% × 150% = <strong>105%</strong>. No matter when you get jacked, you come out ahead.
     </div>
   </div>
 
@@ -1877,9 +1873,10 @@ const GAME_ABI = [
   'function pokeBoil()',
 ];
 
-const STAGE_NAMES  = ['dormant', 'sprouting', 'harvest'];
-const SELLER_BPS   = [8500, 8000, 7000];
-const RESERVE_BPS  = [1300, 1800, 2800];
+const STAGE_NAMES    = ['dormant', 'sprouting', 'harvest'];
+const SELLER_BPS     = [8500, 8000, 7000];
+const RESERVE_BPS    = [1500, 2000, 3000];
+const CREATOR_FEE_BPS = 200; // 2% buyer surcharge on top — not deducted from seller/pot
 
 let readProvider, readContract;
 let signer, walletAddress;
@@ -1996,6 +1993,15 @@ async function loadContractData() {
     document.getElementById('callout-pot').textContent = fmt(potEth);
     document.getElementById('callout-payout').innerHTML = fmt(sealEth) + ' <span>→ you (85%)</span>';
 
+    // Pot section (below hero)
+    const resAmount = document.getElementById('res-amount');
+    const resSub    = document.getElementById('res-sub');
+    const resBar    = document.getElementById('res-bar-fill');
+    if (resAmount) resAmount.textContent = fmt(potEth);
+    if (resSub) resSub.textContent = potEth.toFixed(4) + ' ETH · grows every time the potato is jacked';
+    // Bar: scale relative to a rough target (e.g. 5 ETH = full bar)
+    if (resBar) resBar.style.width = Math.min(100, (potEth / 5) * 100).toFixed(1) + '%';
+
     // Min ask / jack panel
     if (gState === 1) {
       document.getElementById('jack-price').textContent = '—';
@@ -2015,6 +2021,8 @@ async function loadContractData() {
       document.getElementById('split-display').style.display = 'flex';
       document.getElementById('split-seller-pct').textContent = (SELLER_BPS[stage]/100) + '%';
       document.getElementById('split-pot-pct').textContent    = (RESERVE_BPS[stage]/100) + '%';
+      const isHolder2 = walletAddress && walletAddress.toLowerCase() === holderAddr.toLowerCase();
+      document.getElementById('split-seller-label').textContent = isHolder2 ? '→ You' : '→ Seller';
     }
 
     // Ticker
