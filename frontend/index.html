@@ -362,6 +362,41 @@ nav {
   color: rgba(255,245,224,0.3);
   margin-top: 2px;
 }
+/* Boil countdown in potato card */
+.boil-countdown-wrap {
+  margin-top: 12px;
+  padding: 10px 14px;
+  background: rgba(255,51,0,0.07);
+  border: 1px solid rgba(255,51,0,0.22);
+  border-radius: 8px;
+  text-align: center;
+}
+.boil-countdown-label {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(255,51,0,0.55);
+  margin-bottom: 3px;
+}
+.boil-countdown-timer {
+  font-family: 'Black Ops One', sans-serif;
+  font-size: 22px;
+  line-height: 1;
+  color: var(--ember);
+  text-shadow: 0 0 20px rgba(255,51,0,0.4);
+  letter-spacing: 0.04em;
+}
+.boil-countdown-sub {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 9px;
+  color: rgba(255,51,0,0.4);
+  margin-top: 3px;
+  letter-spacing: 0.08em;
+}
+@keyframes ember-pulse { 0%,100%{text-shadow:0 0 20px rgba(255,51,0,0.4)} 50%{text-shadow:0 0 35px rgba(255,51,0,0.7)} }
+[data-stage="boil"] .boil-countdown-timer { animation: ember-pulse 1s ease-in-out infinite; }
 
 .throne-header {
   display: flex;
@@ -1870,14 +1905,14 @@ canvas#growth-canvas {
     <span class="ticker-item ticker-up">PRICE ONLY GOES UP ↑</span>
     <span class="ticker-item" id="ticker-stage">🌱 SPROUTING <span class="ticker-sep">·</span> MIN OVERPAY +30%</span>
     <span class="ticker-item">JACKPOT RESERVE <span class="hi">$1,247</span></span>
-    <span class="ticker-item">LAST JACK 14 DAYS AGO</span>
+    <span class="ticker-item" id="ticker-last-jack">LAST JACK 14 DAYS AGO</span>
     <span class="ticker-item">47 SOUVENIRS MINTED THIS SEASON</span>
     <span class="ticker-item">🥔 JACK THE POTATO · SEASON 1 LIVE</span>
     <span class="ticker-item">CURRENT PRICE <span class="hi">1.65 ETH</span></span>
     <span class="ticker-item ticker-up">PRICE ONLY GOES UP ↑</span>
     <span class="ticker-item" id="ticker-stage2">🌱 SPROUTING <span class="ticker-sep">·</span> MIN OVERPAY +30%</span>
     <span class="ticker-item">JACKPOT RESERVE <span class="hi">$1,247</span></span>
-    <span class="ticker-item">LAST JACK 14 DAYS AGO</span>
+    <span class="ticker-item" id="ticker-last-jack2">LAST JACK 14 DAYS AGO</span>
     <span class="ticker-item">47 SOUVENIRS MINTED THIS SEASON</span>
   </div>
 </div>
@@ -1952,8 +1987,15 @@ canvas#growth-canvas {
 
       <img class="potato-emoji" id="potato-emoji" src="https://gateway.pinata.cloud/ipfs/QmWtJRTidnqGcR77W7NJ6fkZmm57hrZWbLmQH9bUCov9aA" alt="Jack the Potato" />
       <div class="potato-stage-name" id="stage-name">SPROUTING</div>
-      <div class="potato-stage-sub" id="stage-sub">Day 14 of 30 · eyes are opening</div>
+      <div class="potato-stage-sub" id="stage-sub">loading…</div>
       <div class="stage-image-caption" id="stage-image-caption">The potato's appearance changes as it ages — dormant, sprouting, harvest, then boil.</div>
+
+      <!-- Boil countdown -->
+      <div class="boil-countdown-wrap" id="boil-countdown-wrap">
+        <div class="boil-countdown-label" id="boil-countdown-label">🔥 Boil fires if no jack in</div>
+        <div class="boil-countdown-timer" id="boil-countdown-timer">—</div>
+        <div class="boil-countdown-sub" id="boil-countdown-sub">hold longer · win the pot</div>
+      </div>
 
       <div class="throne-holder" style="margin-top:10px;">
         <div class="throne-holder-name" id="holder-name">—</div>
@@ -1980,6 +2022,8 @@ canvas#growth-canvas {
         </div>
       </div>
 
+      <button class="jack-btn" id="jack-btn" style="margin-top:12px;">⚡ Jack</button>
+
       <!-- Split display -->
       <div class="split-display" id="split-display" style="margin-top:10px;">
         <div class="split-seg split-seller">
@@ -1994,8 +2038,6 @@ canvas#growth-canvas {
       <div style="font-family:'Barlow Condensed',sans-serif;font-size:9px;color:rgba(255,245,224,0.25);margin-top:5px;letter-spacing:0.06em;">
         + 2% creator fee on top · remaining splits to holder &amp; pot
       </div>
-
-      <button class="jack-btn" id="jack-btn" style="margin-top:12px;">⚡ Jack</button>
 
       <!-- Hidden fields kept for JS compat -->
       <div style="display:none;">
@@ -2712,6 +2754,49 @@ async function loadContractData() {
     if (resSub) resSub.textContent = potEth.toFixed(4) + ' ETH · grows with every jack, seed &amp; call';
     // Bar: scale relative to a rough target (e.g. 5 ETH = full bar)
     if (resBar) resBar.style.width = Math.min(100, (potEth / 5) * 100).toFixed(1) + '%';
+
+    // Ticker: live "LAST JACK" — sync from contract
+    const lastJackEl  = document.getElementById('ticker-last-jack');
+    const lastJackEl2 = document.getElementById('ticker-last-jack2');
+    const heldStr = formatDuration(holdSecs);
+    if (lastJackEl)  lastJackEl.textContent  = 'LAST JACK ' + heldStr + ' AGO';
+    if (lastJackEl2) lastJackEl2.textContent = 'LAST JACK ' + heldStr + ' AGO';
+
+    // Boil countdown — live 1-second ticker
+    if (window._boilCountdownInterval) clearInterval(window._boilCountdownInterval);
+    const boilWrap   = document.getElementById('boil-countdown-wrap');
+    const boilTimer  = document.getElementById('boil-countdown-timer');
+    const boilLabel  = document.getElementById('boil-countdown-label');
+    const boilSub    = document.getElementById('boil-countdown-sub');
+    if (gState === 1) {
+      // Payout waiting
+      let sealSecsLeft = Number(timeSeal);
+      if (boilWrap)  boilWrap.style.background = 'rgba(155,121,245,0.07)';
+      if (boilWrap)  boilWrap.style.borderColor = 'rgba(155,121,245,0.22)';
+      if (boilLabel) { boilLabel.textContent = '🏆 PAYOUT UNLOCKS IN'; boilLabel.style.color='rgba(155,121,245,0.6)'; }
+      if (boilSub)   { boilSub.textContent = 'The Boil has fired — you won'; boilSub.style.color='rgba(155,121,245,0.4)'; }
+      if (boilTimer) boilTimer.style.color = 'var(--pot)';
+      const tickSeal = () => { if (boilTimer) boilTimer.textContent = sealSecsLeft > 0 ? formatDuration(sealSecsLeft--) : 'READY'; };
+      tickSeal();
+      window._boilCountdownInterval = setInterval(tickSeal, 1000);
+    } else {
+      let boilSecsLeft = Number(timeBoil);
+      if (boilWrap)  { boilWrap.style.background = ''; boilWrap.style.borderColor = ''; }
+      if (boilLabel) { boilLabel.textContent = '🔥 BOIL FIRES IF NO JACK IN'; boilLabel.style.color=''; }
+      if (boilSub)   { boilSub.textContent = 'hold longer · win the pot'; boilSub.style.color=''; }
+      if (boilTimer) boilTimer.style.color = '';
+      const tickBoil = () => { if (boilTimer) boilTimer.textContent = boilSecsLeft > 0 ? formatDuration(boilSecsLeft--) : 'FIRING…'; };
+      tickBoil();
+      window._boilCountdownInterval = setInterval(tickBoil, 1000);
+    }
+
+    // stage-sub — held duration (ticks live too)
+    if (window._holdInterval) clearInterval(window._holdInterval);
+    let liveHold = holdSecs;
+    const stageSub = document.getElementById('stage-sub');
+    const tickHold = () => { if (stageSub) stageSub.textContent = 'Held ' + formatDuration(liveHold++) + ' · ' + (stageStr === 'boil' ? 'The Boil is here' : stageStr); };
+    tickHold();
+    window._holdInterval = setInterval(tickHold, 1000);
 
     // Jack panel
     if (gState === 1) {
