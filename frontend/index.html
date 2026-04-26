@@ -2085,7 +2085,30 @@ canvas#growth-canvas {
     <div class="res-amount" id="res-amount">—</div>
     <div class="res-sub" id="res-sub">loading…</div>
     <div class="res-bar-track"><div class="res-bar-fill" id="res-bar-fill" style="width:0%"></div></div>
-    <div class="res-detail">
+
+    <!-- Vote to Seal — inline in pot section -->
+    <div style="margin-top:16px;padding:14px 16px;background:rgba(155,121,245,0.07);border:1px solid rgba(155,121,245,0.2);border-radius:10px;">
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:rgba(155,121,245,0.7);margin-bottom:6px;">🗳️ Force The Boil Early</div>
+      <div style="font-family:'Barlow',sans-serif;font-size:12px;color:rgba(255,245,224,0.5);line-height:1.65;margin-bottom:10px;">
+        Stake ETH toward triggering The Boil. Once the collective spectator stake hits <strong style="color:var(--cream);">10% of the current Pot</strong>, jacking stops immediately — whoever is holding has won.
+      </div>
+      <div class="spec-threshold-bar" style="margin-bottom:10px;">
+        <div class="spec-threshold-label">
+          <span style="color:rgba(255,245,224,0.4);">Spectator stake vs. 10% threshold</span>
+          <span style="color:var(--pot);" id="vote-threshold-label">$42 / $125 needed</span>
+        </div>
+        <div class="spec-threshold-track">
+          <div class="spec-threshold-fill" id="vote-threshold-fill"></div>
+        </div>
+      </div>
+      <div class="vote-input-row">
+        <input class="vote-input" id="vote-input-main" type="text" placeholder="0.05 ETH" />
+        <button class="vote-btn" onclick="doVoteBoil('vote-input-main')">Vote to Seal</button>
+      </div>
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:9px;color:rgba(255,245,224,0.2);margin-top:6px;letter-spacing:0.04em;">Your stake goes to the Pot whether or not the threshold is reached.</div>
+    </div>
+
+    <div class="res-detail" style="margin-top:14px;">
       Grows with every jack (15–30% of sale), every seed, and 20% of every Call bet. Hold when The Boil fires to claim 85%.
     </div>
   </div>
@@ -2404,7 +2427,7 @@ canvas#growth-canvas {
   <!-- SPECTATORS -->
   <div class="tab-content" id="content-spectators">
     <div class="spec-intro">
-      <p>You don't need to hold the potato to have skin in the game. Three ways to play as a spectator — seed the pot, call the next jack, or vote to end the season early.</p>
+      <p>You don't need to hold the potato to have skin in the game. Two ways to play as a spectator — seed the pot, or call the next jack.</p>
     </div>
 
     <div class="spec-vote-card" style="margin-bottom:20px;">
@@ -2414,32 +2437,11 @@ canvas#growth-canvas {
       </div>
     </div>
 
-    <div class="spec-vote-card" style="margin-bottom:20px;">
+    <div class="spec-vote-card">
       <div class="spec-vote-title">🎯 The Call — Predict the Next Jack</div>
       <div class="spec-vote-body">
         Bet on which stage the next jack happens in — Dormant, Sprouting, Harvest, or The Boil (if you think nobody jacks at all). Every correct caller <strong>splits 80% of the side pot</strong>. The remaining 20% seeds the main jackpot. Your stake settles at the next jack, win or lose.
       </div>
-    </div>
-
-    <div class="spec-vote-card">
-      <div class="spec-vote-title">🗳️ Vote to Seal — Force The Boil</div>
-      <div class="spec-vote-body">
-        Stake ETH toward forcing The Boil early. Once the collective spectator stake hits <strong>10% of the current Pot</strong>, the 48-hour window fires automatically — jacking stops and whoever is holding has won. Your stake goes to the Pot. Real power, real skin in the game.
-        <div class="spec-threshold-bar" style="margin-top:14px;">
-          <div class="spec-threshold-label">
-            <span>Spectator stake vs. 10% threshold</span>
-            <span style="color:var(--pot);">$42 / $125 needed</span>
-          </div>
-          <div class="spec-threshold-track">
-            <div class="spec-threshold-fill"></div>
-          </div>
-        </div>
-      </div>
-      <div class="vote-input-row">
-        <input class="vote-input" type="text" placeholder="0.05 ETH" />
-        <button class="vote-btn">Vote to Seal</button>
-      </div>
-      <div class="vote-note">Your stake adds to the Pot regardless of whether the threshold is reached. If it tips the balance, The Boil fires immediately.</div>
     </div>
   </div>
 </div>
@@ -3261,9 +3263,10 @@ async function doJack() {
 }
 
 // ── VOTE BOIL ────────────────────────────────────────────────────────────────
-async function doVote() {
+async function doVoteBoil(inputId) {
   if (!signer) { await connectWallet(); return; }
-  const val = document.querySelector('.vote-input').value;
+  const el = document.getElementById(inputId || 'vote-input-main');
+  const val = el ? el.value : '';
   if (!val || isNaN(val)) return alert('Enter a valid ETH amount');
   try {
     const c = new ethers.Contract(GAME_ADDRESS, GAME_ABI, signer);
@@ -3272,6 +3275,7 @@ async function doVote() {
     await loadContractData();
   } catch(e) { console.error('Vote error:', e); }
 }
+async function doVote() { return doVoteBoil('vote-input-main'); }
 
 // ── HELPERS ──────────────────────────────────────────────────────────────────
 function formatDuration(secs) {
