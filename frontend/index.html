@@ -2078,6 +2078,94 @@ canvas#growth-canvas {
   </div>
 </div>
 
+<!-- SPECTATOR PLAY -->
+<div class="spectator-section">
+  <div class="spectator-eyebrow">👁 For Spectators</div>
+  <div class="spectator-heading">Don't Hold The Potato. Play It.</div>
+  <div class="spectator-sub">
+    You don't have to hold the NFT to have skin in the game. Seed the pot and get a mystery souvenir, or call the next jack and win from the side pot.
+  </div>
+
+  <div class="spectator-cards">
+
+    <!-- SEED THE POT -->
+    <div class="spec-card">
+      <div class="spec-card-tag seed">🌱 Seed</div>
+      <div class="spec-card-title">Seed the Pot</div>
+      <div class="spec-card-body">
+        Send ETH directly into the jackpot. <strong>Every seed grows the prize for whoever holds longest.</strong> In return, you receive a mystery Souvenir NFT — a randomly selected piece from Season 1 holders who've opted in.
+      </div>
+
+      <div class="seed-presets">
+        <div class="seed-preset" onclick="setSeedAmount(0.001)">0.001</div>
+        <div class="seed-preset" onclick="setSeedAmount(0.005)">0.005</div>
+        <div class="seed-preset" onclick="setSeedAmount(0.01)">0.01</div>
+        <div class="seed-preset" onclick="setSeedAmount(0.05)">0.05</div>
+      </div>
+      <div class="seed-input-row">
+        <input type="number" id="seed-input" class="seed-amount-input" step="0.001" min="0.001" placeholder="0.001" />
+        <span class="seed-eth-label">ETH</span>
+      </div>
+      <button class="seed-btn" id="seed-btn" onclick="doSeed()">🎴 Seed &amp; Get Souvenir</button>
+      <div class="seed-reward-note" id="seed-usd">100% goes to the pot · you receive a mystery Souvenir NFT</div>
+    </div>
+
+    <!-- THE CALL -->
+    <div class="spec-card" style="background:linear-gradient(135deg,rgba(232,24,106,0.14) 0%,rgba(232,24,106,0.04) 60%,var(--card) 100%);border-color:rgba(232,24,106,0.3);">
+      <div class="spec-card-tag call" style="color:var(--brand-light);">🎯 Side Bet</div>
+      <div class="spec-card-title" style="color:var(--brand-light);font-size:24px;">The Call</div>
+      <div class="spec-card-body" style="color:rgba(255,245,224,0.7);">
+        Back the stage you think the next jack lands in. If you're right, <strong style="color:var(--cream);">you split 80% of the side pot</strong> with every other winner. Wrong side loses it all. The last 20% seeds the main jackpot.
+      </div>
+
+      <div class="call-stages">
+        <div class="call-stage-opt" id="call-opt-dormant" onclick="selectCall('dormant')">
+          <span class="call-stage-emoji">🥔</span>
+          <div class="call-stage-name">Dormant</div>
+          <div class="call-stage-pool" id="call-pool-dormant">0.000 ETH</div>
+        </div>
+        <div class="call-stage-opt" id="call-opt-sprouting" onclick="selectCall('sprouting')">
+          <span class="call-stage-emoji">🌱</span>
+          <div class="call-stage-name">Sprouting</div>
+          <div class="call-stage-pool" id="call-pool-sprouting">0.000 ETH</div>
+        </div>
+        <div class="call-stage-opt" id="call-opt-harvest" onclick="selectCall('harvest')">
+          <span class="call-stage-emoji">🌾</span>
+          <div class="call-stage-name">Harvest</div>
+          <div class="call-stage-pool" id="call-pool-harvest">0.000 ETH</div>
+        </div>
+        <div class="call-stage-opt" id="call-opt-boil" onclick="selectCall('boil')">
+          <span class="call-stage-emoji">🔥</span>
+          <div class="call-stage-name">The Boil</div>
+          <div class="call-stage-pool" id="call-pool-boil">0.000 ETH</div>
+        </div>
+      </div>
+
+      <div class="call-input-row">
+        <input type="number" id="call-input" class="call-amount-input" step="0.001" min="0.001" placeholder="0.001" />
+        <span class="seed-eth-label">ETH</span>
+      </div>
+      <button class="call-btn" id="call-btn" onclick="doCall()">🎯 Place My Call</button>
+
+      <div class="call-pot-row">
+        <div class="call-pot-item">
+          <span id="call-total-pot">0.000 ETH</span>
+          Total side pot
+        </div>
+        <div class="call-pot-item">
+          <span id="call-winner-share">—</span>
+          Winners take
+        </div>
+        <div class="call-pot-item seeds">
+          <span id="call-seeds-pot">—</span>
+          Seeds jackpot
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
 <!-- RESERVE / JACKPOT -->
 <div class="pot-section">
   <div class="pot-main">
@@ -2173,94 +2261,6 @@ canvas#growth-canvas {
     <div class="souvenir-mint-note" style="margin-top:12px;">
       Minted automatically when you're jacked — straight to your wallet. <strong>Trade on any secondary market.</strong> Royalties on resale go to the creator.
     </div>
-  </div>
-</div>
-
-<!-- SPECTATOR PLAY -->
-<div class="spectator-section">
-  <div class="spectator-eyebrow">👁 For Spectators</div>
-  <div class="spectator-heading">Don't Hold The Potato. Play It.</div>
-  <div class="spectator-sub">
-    You don't have to hold the NFT to have skin in the game. Seed the pot and get a mystery souvenir, or call the next jack and win from the side pot.
-  </div>
-
-  <div class="spectator-cards">
-
-    <!-- SEED THE POT -->
-    <div class="spec-card">
-      <div class="spec-card-tag seed">🌱 Seed</div>
-      <div class="spec-card-title">Seed the Pot</div>
-      <div class="spec-card-body">
-        Send ETH directly into the jackpot. <strong>Every seed grows the prize for whoever holds longest.</strong> In return, you receive a mystery Souvenir NFT — a randomly selected piece from Season 1 holders who've opted in.
-      </div>
-
-      <div class="seed-presets">
-        <div class="seed-preset" onclick="setSeedAmount(0.001)">0.001</div>
-        <div class="seed-preset" onclick="setSeedAmount(0.005)">0.005</div>
-        <div class="seed-preset" onclick="setSeedAmount(0.01)">0.01</div>
-        <div class="seed-preset" onclick="setSeedAmount(0.05)">0.05</div>
-      </div>
-      <div class="seed-input-row">
-        <input type="number" id="seed-input" class="seed-amount-input" step="0.001" min="0.001" placeholder="0.001" />
-        <span class="seed-eth-label">ETH</span>
-      </div>
-      <button class="seed-btn" id="seed-btn" onclick="doSeed()">🎴 Seed &amp; Get Souvenir</button>
-      <div class="seed-reward-note" id="seed-usd">100% goes to the pot · you receive a mystery Souvenir NFT</div>
-    </div>
-
-    <!-- THE CALL -->
-    <div class="spec-card" style="background:linear-gradient(135deg,rgba(232,24,106,0.14) 0%,rgba(232,24,106,0.04) 60%,var(--card) 100%);border-color:rgba(232,24,106,0.3);">
-      <div class="spec-card-tag call" style="color:var(--brand-light);">🎯 Side Bet</div>
-      <div class="spec-card-title" style="color:var(--brand-light);font-size:24px;">The Call</div>
-      <div class="spec-card-body" style="color:rgba(255,245,224,0.7);">
-        Back the stage you think the next jack lands in. If you're right, <strong style="color:var(--cream);">you split 80% of the side pot</strong> with every other winner. Wrong side loses it all. The last 20% seeds the main jackpot.
-      </div>
-
-      <div class="call-stages">
-        <div class="call-stage-opt" id="call-opt-dormant" onclick="selectCall('dormant')">
-          <span class="call-stage-emoji">🥔</span>
-          <div class="call-stage-name">Dormant</div>
-          <div class="call-stage-pool" id="call-pool-dormant">0.000 ETH</div>
-        </div>
-        <div class="call-stage-opt" id="call-opt-sprouting" onclick="selectCall('sprouting')">
-          <span class="call-stage-emoji">🌱</span>
-          <div class="call-stage-name">Sprouting</div>
-          <div class="call-stage-pool" id="call-pool-sprouting">0.000 ETH</div>
-        </div>
-        <div class="call-stage-opt" id="call-opt-harvest" onclick="selectCall('harvest')">
-          <span class="call-stage-emoji">🌾</span>
-          <div class="call-stage-name">Harvest</div>
-          <div class="call-stage-pool" id="call-pool-harvest">0.000 ETH</div>
-        </div>
-        <div class="call-stage-opt" id="call-opt-boil" onclick="selectCall('boil')">
-          <span class="call-stage-emoji">🔥</span>
-          <div class="call-stage-name">The Boil</div>
-          <div class="call-stage-pool" id="call-pool-boil">0.000 ETH</div>
-        </div>
-      </div>
-
-      <div class="call-input-row">
-        <input type="number" id="call-input" class="call-amount-input" step="0.001" min="0.001" placeholder="0.001" />
-        <span class="seed-eth-label">ETH</span>
-      </div>
-      <button class="call-btn" id="call-btn" onclick="doCall()">🎯 Place My Call</button>
-
-      <div class="call-pot-row">
-        <div class="call-pot-item">
-          <span id="call-total-pot">0.000 ETH</span>
-          Total side pot
-        </div>
-        <div class="call-pot-item">
-          <span id="call-winner-share">—</span>
-          Winners take
-        </div>
-        <div class="call-pot-item seeds">
-          <span id="call-seeds-pot">—</span>
-          Seeds jackpot
-        </div>
-      </div>
-    </div>
-
   </div>
 </div>
 
