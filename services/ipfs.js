@@ -1,4 +1,4 @@
-// Hot Potato — Pinata IPFS Service
+// Jack the Potato — Pinata IPFS Service
 const axios = require('axios');
 const FormData = require('form-data');
 
@@ -36,7 +36,7 @@ async function uploadMetadataToIPFS(metadata) {
     'https://api.pinata.cloud/pinning/pinJSONToIPFS',
     {
       pinataContent: metadata,
-      pinataMetadata: { name: `hot-potato-souvenir-${metadata.edition}` },
+      pinataMetadata: { name: `jack-the-potato-souvenir-${metadata.edition}` },
     },
     {
       headers: {
@@ -53,8 +53,8 @@ async function uploadMetadataToIPFS(metadata) {
 
 function buildMetadata({ rarity, holdDurationHours, holderAddress, imageCid, edition }) {
   return {
-    name: `Hot Potato Souvenir #${edition}`,
-    description: `A ${rarity} souvenir from the Hot Potato NFT game. This potato was held for ${Math.round(holdDurationHours)} hours.`,
+    name: `Jack the Potato Souvenir #${edition}`,
+    description: `A ${rarity} souvenir from Jack the Potato — the NFT that's always for sale. This potato was held for ${Math.round(holdDurationHours)} hours.`,
     image: `ipfs://${imageCid}`,
     attributes: [
       { trait_type: 'Rarity', value: rarity.charAt(0).toUpperCase() + rarity.slice(1) },
