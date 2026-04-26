@@ -2200,17 +2200,16 @@ canvas#growth-canvas {
           <span class="res-payout-pct big">85%</span>
         </div>
         <div class="res-payout-row">
-          <span class="res-payout-who">Seeds Season 2</span>
+          <span class="res-payout-who">Seeds Season 2 pot</span>
           <span class="res-payout-pct med">10%</span>
         </div>
-        <div class="res-payout-row">
-          <span class="res-payout-who">Creator <span style="color:var(--violet)">(1% → Internet Archive)</span></span>
-          <span class="res-payout-pct small">5%</span>
-        </div>
+      </div>
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:10px;color:rgba(255,245,224,0.25);margin-top:10px;letter-spacing:0.04em;line-height:1.5;">
+        5% creator fee · 1% of that goes to the <a href="https://archive.org" target="_blank" style="color:rgba(155,121,245,0.5);">Internet Archive</a>
       </div>
     </div>
     <div class="res-note">
-      Hold longest. Win 85% of the pot. <strong>The Boil can fire any time after Harvest</strong> — nobody knows when.
+      Hold longest. Win 85% of the pot. <strong>The Boil fires after 15 days with no jack</strong> — nobody knows exactly when it will end.
     </div>
   </div>
 </div>
@@ -2256,11 +2255,11 @@ canvas#growth-canvas {
     <div class="rules-grid">
       <div class="rule-card">
         <div class="rule-card-title">🥔 One Potato, Always For Sale</div>
-        <div class="rule-card-body">There is exactly one Jackpotato NFT. It's always for sale. The current holder <strong>cannot refuse</strong> — if someone meets the minimum price, they take it. No blocking. That's the game.</div>
+        <div class="rule-card-body">There is exactly one Jackpotato NFT. It's always jackable. The current holder <strong>cannot refuse</strong> — if someone meets the minimum price, they jack it. No blocking. That's the game.</div>
       </div>
       <div class="rule-card">
         <div class="rule-card-title">📈 Price Can Only Go Up</div>
-        <div class="rule-card-body">The contract enforces a floor. Every sale must beat the previous price by the current stage minimum. <strong>Nobody can rug the price out from under you.</strong> Every holder paid more than the one before them.</div>
+        <div class="rule-card-body">The contract enforces a floor. Every jack must beat the previous price by the current stage minimum. <strong>Nobody can rug the price out from under you.</strong> Every holder paid more than the one before them — and so will the next.</div>
       </div>
       <div class="rule-card">
         <div class="rule-card-title">🌱 Holding Is Fortification</div>
@@ -2268,7 +2267,7 @@ canvas#growth-canvas {
       </div>
       <div class="rule-card">
         <div class="rule-card-title">💸 Getting Jacked = At Least Breakeven</div>
-        <div class="rule-card-body">The contract guarantees you get back at least what you paid. Every buyer must overpay the floor minimum — <strong>the more they overpay, the more profit you pocket</strong> and the bigger the jackpot grows. You also receive a <strong>Souvenir NFT</strong> immortalising your hold, tradeable on secondary markets with royalties back to the creator.</div>
+        <div class="rule-card-body">The contract guarantees you get back at least what you paid. Every jack must beat the floor — <strong>the more they overpay, the more profit you pocket</strong> and the bigger the jackpot grows. Hold longer and the floor gets higher, making you more expensive to jack. You also receive a <strong>Souvenir NFT</strong> immortalising your hold.</div>
       </div>
     </div>
 
@@ -2276,7 +2275,7 @@ canvas#growth-canvas {
       <div class="arc-title">Example Arc — How A Season Plays Out</div>
       <div class="arc-steps">
         <div class="arc-step" style="border-left:3px solid rgba(168,124,82,0.5);padding-left:16px;">
-          <strong>Day 0.</strong> Alice buys the Jackpotato for 1.0 ETH. The price floor is now set — anyone who wants it must pay at least 20% more than she did. She doesn't pick a price. The contract enforces it.
+          <strong>Day 0.</strong> Alice jacks the Jackpotato for 1.0 ETH. The price floor is now set — anyone who wants it must jack at 20% above what she paid. She doesn't pick a price. The contract enforces it.
         </div>
         <div class="arc-step" style="border-left:3px solid rgba(93,187,106,0.5);padding-left:16px;">
           <strong>Day 5.</strong> The potato sprouts. The minimum anyone must pay Alice has jumped to +30% above her price — at least 1.30 ETH. She's harder to dislodge with every passing day. Spectators start placing calls on which stage the next jack lands.
@@ -2285,7 +2284,7 @@ canvas#growth-canvas {
           <strong>Day 10.</strong> Harvest. Floor is now +50% — anyone jacking Alice must pay at least 1.50 ETH. The Pot has been growing from every prior jack this season, plus seed contributions and The Call side bets.
         </div>
         <div class="arc-step" style="border-left:3px solid var(--brand);padding-left:16px;">
-          <strong>Day 12.</strong> Bob wants it badly. He pays 2.25 ETH — 50% above the Harvest floor. After the 2% creator fee, ~2.21 ETH settles: Alice walks away with <strong>~1.55 ETH</strong> (70% of base) — a <strong>+55% profit</strong> on what she paid — plus a Legendary Souvenir NFT she can keep or sell. The Pot gets the other 30%.
+          <strong>Day 12.</strong> Bob jacks her for 2.25 ETH — 50% above the Harvest floor. After the 2% creator fee, ~2.21 ETH settles: Alice walks away with <strong>~1.55 ETH</strong> (70% of base) — a <strong>+55% profit</strong> on what she paid — plus a Legendary Souvenir NFT. The Pot gets the other 30%.
         </div>
         <div class="arc-step" style="border-left:3px solid var(--pot);padding-left:16px;">
           <strong>Day 27.</strong> Bob held for 15 days without anyone jacking him. The Boil fires. Jacking stops immediately — Bob has won. After a 48-hour safety window, he claims <strong>85% of the Season Pot</strong>. 10% carries forward to seed Season 2. The season closes.
@@ -2297,7 +2296,7 @@ canvas#growth-canvas {
   <!-- STAGES & SPLITS -->
   <div class="tab-content" id="content-stages">
     <p style="font-family:'Barlow',sans-serif;font-size:14px;color:rgba(255,245,224,0.5);max-width:640px;margin-bottom:28px;line-height:1.75;">
-      The potato moves through three stages based on how long the current holder has held it. Each stage raises the minimum price someone must pay to jack it — and changes how the sale proceeds are split between the seller, the Pot, and the creator.
+      The potato moves through three stages based on how long you've held it. Each stage raises the floor someone must pay to jack you — and changes how the jack proceeds split between you, the Pot, and the creator. <strong>The longer you hold, the higher the floor and the closer you are to winning the pot.</strong>
     </p>
 
     <div class="stages-explainer">
@@ -2305,9 +2304,9 @@ canvas#growth-canvas {
         <div class="stage-card-emoji">🥔</div>
         <div class="stage-card-name">Dormant</div>
         <div class="stage-card-days">Days 0 – 5</div>
-        <div class="stage-card-body">Fresh hold. The potato is just sitting there. The jackpot is in its early days — buyers can still get in at a relatively low barrier. <strong>Min +20% above last price.</strong></div>
+        <div class="stage-card-body">Fresh hold. You're just getting started — the floor is low and you're still easy to jack. The pot is young. <strong>Min +20% to jack you.</strong></div>
         <div class="stage-split-pill">
-          <div class="ssp-row ssp-seller"><span class="ssp-pct">85%</span><span class="ssp-who">→ Seller</span></div>
+          <div class="ssp-row ssp-seller"><span class="ssp-pct">85%</span><span class="ssp-who">→ You</span></div>
           <div class="ssp-row ssp-pot"><span class="ssp-pct">15%</span><span class="ssp-who">→ Pot</span></div>
         </div>
       </div>
@@ -2315,9 +2314,9 @@ canvas#growth-canvas {
         <div class="stage-card-emoji">🌱</div>
         <div class="stage-card-name">Sprouting</div>
         <div class="stage-card-days">Days 5 – 10</div>
-        <div class="stage-card-body">Eyes are opening. The hold is getting real. More of each sale now flows into the jackpot — the prize is growing faster. <strong>Min +30% above last price.</strong></div>
+        <div class="stage-card-body">Eyes are opening. You're getting harder to jack — the floor has risen and more of every jack now flows to the pot. The prize is building. <strong>Min +30% to jack you.</strong></div>
         <div class="stage-split-pill">
-          <div class="ssp-row ssp-seller"><span class="ssp-pct">80%</span><span class="ssp-who">→ Seller</span></div>
+          <div class="ssp-row ssp-seller"><span class="ssp-pct">80%</span><span class="ssp-who">→ You</span></div>
           <div class="ssp-row ssp-pot"><span class="ssp-pct">20%</span><span class="ssp-who">→ Pot</span></div>
         </div>
       </div>
@@ -2325,16 +2324,16 @@ canvas#growth-canvas {
         <div class="stage-card-emoji">🌾</div>
         <div class="stage-card-name">Harvest</div>
         <div class="stage-card-days">Days 10 – 15</div>
-        <div class="stage-card-body">It's fully ripe. The biggest slice of every sale goes to the Pot. Getting jacked here still guarantees profit — and the Pot gets fat. <strong>Min +50% above last price.</strong></div>
+        <div class="stage-card-body">Fully ripe. You're expensive to jack — and if nobody does, The Boil can fire any time. The biggest slice of every jack now feeds the Pot. <strong>Min +50% to jack you.</strong></div>
         <div class="stage-split-pill">
-          <div class="ssp-row ssp-seller"><span class="ssp-pct">70%</span><span class="ssp-who">→ Seller</span></div>
+          <div class="ssp-row ssp-seller"><span class="ssp-pct">70%</span><span class="ssp-who">→ You</span></div>
           <div class="ssp-row ssp-pot"><span class="ssp-pct">30%</span><span class="ssp-who">→ Pot</span></div>
         </div>
       </div>
     </div>
 
     <div class="seller-always-wins">
-      <strong>The contract guarantees you at least break even — and overpay is where the real profit lives.</strong> A 2% creator fee is taken from each purchase; the remainder splits between seller and Pot. At the bare minimum overpay: Dormant (+20%) returns <strong>~100%</strong> of what you paid, Sprouting (+30%) returns <strong>~102%</strong>, Harvest (+50%) returns <strong>~103%</strong>. But buyers rarely pay the minimum — every extra percent they put in <strong>directly increases your payout and grows the jackpot at the same time</strong>. The more excitement in the market, the better it is for both the current holder and the Pot.
+      <strong>The contract guarantees you at least break even — overpay is where the profit lives.</strong> A 2% creator fee is taken from each jack; the remainder splits between you and the Pot. At bare minimum: Dormant (+20% floor) returns <strong>~100%</strong> of what you paid, Sprouting (+30%) returns <strong>~102%</strong>, Harvest (+50%) returns <strong>~103%</strong>. But jackers rarely pay the minimum — every extra percent they put in <strong>directly increases your payout and grows the jackpot</strong>. The more they want it, the better for you and the Pot.
     </div>
   </div>
 
@@ -2344,12 +2343,12 @@ canvas#growth-canvas {
       <div class="ls-title">🕯️ The Boil</div>
       <div class="ls-body">
         <p>Every season ends with a <strong>The Boil</strong>. It fires when 15 consecutive days pass without anyone jacking the potato.</p>
-        <p>When The Boil fires, <strong>jacking stops immediately</strong>. No more buying. Whoever is holding the potato at that moment has won — they just have to wait 48 hours for the payout to be unlocked. The 48-hour window is purely a safety buffer before anyone can call the payout function.</p>
+        <p>When The Boil fires, <strong>jacking stops immediately</strong>. Whoever is holding the potato at that moment has won — they just have to wait 48 hours for the payout to unlock.</p>
         <p>After 48 hours, anyone can trigger the payout. The Pot pays out flat:</p>
         <div class="seal-split-row">
           <div class="seal-seg seal-seg-1">
             <span class="seal-pct">85%</span>
-            <span class="seal-who">Final Holder</span>
+            <span class="seal-who">You (Final Holder)</span>
           </div>
           <div class="seal-seg seal-seg-2">
             <span class="seal-pct">10%</span>
@@ -2357,10 +2356,11 @@ canvas#growth-canvas {
           </div>
           <div class="seal-seg seal-seg-3">
             <span class="seal-pct">5%</span>
-            <span class="seal-who">Creator <span style="color:var(--violet);">(1%→Archive)</span></span>
+            <span class="seal-who">Creator fee</span>
           </div>
         </div>
-        <p>The split is flat regardless of how long you held. Hold for 15 days and nobody jacks you — <strong>you win 85% of the Pot</strong>. That's the game.</p>
+        <p style="font-size:11px;color:rgba(255,245,224,0.3);margin-top:6px;">1% of the creator fee goes to the <a href="https://archive.org" target="_blank" style="color:rgba(155,121,245,0.5);">Internet Archive</a>.</p>
+        <p>Nobody jacks you for 15 days — <strong>you win 85% of the Pot</strong>. That's the game.</p>
       </div>
     </div>
 
@@ -2422,7 +2422,7 @@ canvas#growth-canvas {
 <div class="about-section">
   <div class="about-text">
     <div class="about-h">What is Jack the Potato?</div>
-    <p>Jack the Potato is a single-NFT perpetual-auction game on <strong>Base</strong>. One token exists. It's always for sale. The holder can't refuse — but they're guaranteed a profit every time they get jacked. The price can only ever go up.</p>
+    <p>Jack the Potato is a single-NFT perpetual-auction game on <strong>Base</strong>. One token exists. It's always jackable. The holder can't refuse — but they're guaranteed a profit every time they get jacked. The longer they hold, the more expensive they are to jack — and the closer they are to winning the pot.</p>
     <p>The game plays out in seasons. Each season ends with <strong>The Boil</strong> — the moment jacking stops and whoever is holding the potato collects 85% of the season's Pot. Build your position, fortify your hold, and hope you're still standing at the bell.</p>
     <p>Season 1 launched with a <strong>$1,000 Pot seed</strong> so the first jackpot is worth chasing from day one.</p>
     <p style="margin-top:10px;font-size:12px;color:rgba(255,245,224,0.3);">1% of every season's creator fee goes to the <a href="https://archive.org" target="_blank">Internet Archive</a> — because some of what made this possible belongs to the commons.</p>
@@ -2433,16 +2433,16 @@ canvas#growth-canvas {
       <div class="faq-a">If someone jacks you, the contract guarantees you get back at least what you paid — and more if they overpay the floor. If nobody jacks you and The Boil fires, you win 85% of the entire Season Pot. The only real risk is opportunity cost: you hold, nobody jacks you, and the Pot turns out smaller than you'd hoped. The price going up is guaranteed; the Pot size depends on how active the season is.</div>
     </div>
     <div class="faq-item">
-      <div class="faq-q">What if nobody buys it from me?</div>
-      <div class="faq-a">Then you're in the best position in the game. The Pot keeps growing from every jack this season, plus spectator seeds and Call side bets. If 15 days pass without anyone jacking you, The Boil fires — you've won. Jacking stops immediately and you claim 85% of everything that's accumulated. Spectators can also trigger The Boil early by staking a vote.</div>
+      <div class="faq-q">What if nobody jacks me?</div>
+      <div class="faq-a">Then you're in the best position in the game. Every day you hold, the floor to jack you rises — you're getting more expensive and the Pot keeps growing. If 15 days pass without anyone jacking you, The Boil fires — you've won. Jacking stops immediately and you claim 85% of everything that's accumulated.</div>
     </div>
     <div class="faq-item">
-      <div class="faq-q">Why does the seller get less at Harvest?</div>
-      <div class="faq-a">Because more goes to the Pot — making the jackpot bigger. At Harvest you're selling at a 50% premium above what you paid, and you still guaranteed profit. The lower seller % at later stages is the mechanism that accelerates jackpot growth as the season matures.</div>
+      <div class="faq-q">Why do I get a smaller cut the longer I hold?</div>
+      <div class="faq-a">Because more flows to the Pot — making the jackpot bigger for whoever survives longest. At Harvest the floor is +50%, so you still profit when jacked. The trade-off: longer hold = higher floor = harder to jack = closer to winning the whole pot. The mechanic rewards holding, not exiting early.</div>
     </div>
     <div class="faq-item">
       <div class="faq-q">What's a Souvenir?</div>
-      <div class="faq-a">A separate NFT minted to the outgoing holder every time the potato is jacked. Rarity is calculated on-chain from how long you held, the stage, and how much the buyer overpaid. Art is generated off-chain and pinned to IPFS. Souvenirs may carry perks in future seasons.</div>
+      <div class="faq-a">A separate NFT minted to you every time you get jacked. Rarity is calculated on-chain from how long you held, the stage, and how much the jacker overpaid. Art is generated off-chain and pinned to IPFS. Trade them on secondary markets — royalties go to the creator. Souvenirs may carry perks in future seasons.</div>
     </div>
     <div class="faq-item">
       <div class="faq-q">What happens to the Pot at season end?</div>
