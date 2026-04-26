@@ -1133,6 +1133,91 @@ footer {
 .pill-violet { background: rgba(196,181,244,0.1);  color: var(--violet);  border: 1px solid rgba(196,181,244,0.22); }
 .pill-pot{ background: rgba(155,121,245,0.1);  color: var(--pot); border: 1px solid rgba(155,121,245,0.25); }
 
+/* ── GROWTH CHART ── */
+.growth-section {
+  padding: 36px 52px 40px;
+  border-bottom: 0.5px solid var(--border);
+  background: rgba(22,11,4,0.3);
+}
+.growth-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.growth-title {
+  font-family: 'Black Ops One', sans-serif;
+  font-size: 18px;
+  color: var(--cream);
+  letter-spacing: 0.5px;
+  margin-bottom: 3px;
+}
+.growth-sub {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 12px;
+  color: rgba(255,245,224,0.35);
+  letter-spacing: 0.06em;
+}
+.growth-legend {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+.gl-item {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.gl-dot {
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+canvas#growth-canvas {
+  width: 100%;
+  height: 220px;
+  display: block;
+}
+
+/* ── JACK BID INPUT ── */
+.jack-amount-wrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+.jack-amount-input {
+  flex: 1;
+  background: rgba(255,245,224,0.06);
+  border: 1px solid rgba(255,245,224,0.2);
+  border-radius: 6px;
+  padding: 10px 12px;
+  color: var(--cream);
+  font-family: 'Black Ops One', sans-serif;
+  font-size: 22px;
+  outline: none;
+  width: 100%;
+  -moz-appearance: textfield;
+}
+.jack-amount-input::-webkit-outer-spin-button,
+.jack-amount-input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+.jack-amount-input:focus { border-color: var(--brand); }
+.jack-amount-input.over-min { border-color: rgba(126,219,133,0.5); }
+.jack-amount-input.under-min { border-color: rgba(232,24,106,0.6); }
+.jack-amount-eth {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  color: rgba(255,245,224,0.35);
+  flex-shrink: 0;
+}
+
 /* ── HERO TITLE "the" ── */
 .hero-title .the-word {
   font-family: 'Barlow Condensed', sans-serif;
@@ -1402,10 +1487,13 @@ footer {
         </div>
       </div>
 
-      <div class="jack-min-label" style="margin-top:14px;">Minimum Jack Price</div>
-      <div class="jack-price" id="jack-price">2.15 ETH</div>
-      <div class="jack-price-usd" id="jack-usd">≈ $3,841 · Sprouting requires min +30% above last price</div>
-      <button class="jack-btn" id="jack-btn">⚡ Jack for 2.15 ETH</button>
+      <div class="jack-min-label" style="margin-top:14px;">Your Bid</div>
+      <div class="jack-amount-wrap">
+        <input type="number" id="jack-amount-input" class="jack-amount-input" step="0.0001" min="0" placeholder="0.0000" />
+        <span class="jack-amount-eth">ETH</span>
+      </div>
+      <div class="jack-price-usd" id="jack-usd">loading…</div>
+      <button class="jack-btn" id="jack-btn">⚡ Jack</button>
       <!-- Split display -->
       <div class="split-display" id="split-display">
         <div class="split-seg split-seller">
@@ -1422,6 +1510,22 @@ footer {
       </div>
     </div>
   </div>
+</div>
+
+<!-- PRICE GROWTH CHART -->
+<div class="growth-section">
+  <div class="growth-header">
+    <div>
+      <div class="growth-title">Price Growth Potential</div>
+      <div class="growth-sub">From <span id="growth-base-label">current price</span> · compounding at each jack's minimum overpay</div>
+    </div>
+    <div class="growth-legend">
+      <div class="gl-item"><div class="gl-dot" style="background:#A87C52;box-shadow:0 0 6px rgba(168,124,82,0.5);"></div><span style="color:#A87C52;">Quick jacks · +20% each</span></div>
+      <div class="gl-item"><div class="gl-dot" style="background:#5DBB6A;box-shadow:0 0 6px rgba(93,187,106,0.5);"></div><span style="color:#5DBB6A;">Measured · +30% each</span></div>
+      <div class="gl-item"><div class="gl-dot" style="background:#E5A700;box-shadow:0 0 6px rgba(229,167,0,0.5);"></div><span style="color:#E5A700;">Patient · +50% each</span></div>
+    </div>
+  </div>
+  <canvas id="growth-canvas" width="1400" height="220"></canvas>
 </div>
 
 <!-- RESERVE / JACKPOT -->
@@ -2004,26 +2108,29 @@ async function loadContractData() {
 
     // Min ask / jack panel
     if (gState === 1) {
-      document.getElementById('jack-price').textContent = '—';
       document.getElementById('jack-usd').textContent   = 'Jacking is closed. Whoever holds wins 85% of the jackpot.';
       document.getElementById('jack-btn').textContent   = '🔒 Jacking Closed';
       document.getElementById('jack-btn').disabled      = true;
+      const inputEl = document.getElementById('jack-amount-input');
+      if (inputEl) inputEl.disabled = true;
       document.getElementById('split-display').style.display = 'none';
     } else {
       const isHolder = walletAddress && walletAddress.toLowerCase() === holderAddr.toLowerCase();
-      document.getElementById('jack-price').textContent = minAskEth.toFixed(4) + ' ETH';
-      document.getElementById('jack-usd').textContent   =
-        (ethPrice > 0 ? '≈ $' + Math.round(minAskEth * ethPrice).toLocaleString() + ' · ' : '') +
-        stageStr.charAt(0).toUpperCase() + stageStr.slice(1) + ' requires min +' +
-        ({dormant:'20',sprouting:'30',harvest:'50'}[stageStr]||'?') + '% above last price';
-      document.getElementById('jack-btn').textContent   = isHolder ? '🥔 You\'re holding it' : `⚡ Jack for ${minAskEth.toFixed(4)} ETH`;
-      document.getElementById('jack-btn').disabled      = !!isHolder;
       document.getElementById('split-display').style.display = 'flex';
       document.getElementById('split-seller-pct').textContent = (SELLER_BPS[stage]/100) + '%';
       document.getElementById('split-pot-pct').textContent    = (RESERVE_BPS[stage]/100) + '%';
-      const isHolder2 = walletAddress && walletAddress.toLowerCase() === holderAddr.toLowerCase();
-      document.getElementById('split-seller-label').textContent = isHolder2 ? '→ You' : '→ Seller';
+      document.getElementById('split-seller-label').textContent = isHolder ? '→ You' : '→ Seller';
+      if (isHolder) {
+        document.getElementById('jack-btn').textContent = '🥔 You\'re holding it';
+        document.getElementById('jack-btn').disabled = true;
+        document.getElementById('jack-usd').textContent = 'You hold the potato — wait to be jacked or hold for the win.';
+      } else {
+        updateBidInput(minAskEth, stageStr, stage);
+      }
     }
+
+    // Growth chart (uses lastJackPrice as base, independent of fee)
+    drawGrowthChart(lastPriceEth);
 
     // Ticker
     const tickerStageText = {
@@ -2110,6 +2217,196 @@ function updateTrajectory(lastPriceEth, stageStr, potEth) {
   if (traj) traj.style.display = stageStr === 'boil' ? 'none' : 'block';
 }
 
+// ── GROWTH CHART ─────────────────────────────────────────────────────────────
+function drawGrowthChart(startEth) {
+  const canvas = document.getElementById('growth-canvas');
+  if (!canvas || startEth <= 0) return;
+  const ctx = canvas.getContext('2d');
+  const W = 1400, H = 220;
+  const padL = 90, padR = 160, padT = 16, padB = 38;
+  const cW = W - padL - padR, cH = H - padT - padB;
+  const JACKS = 12;
+
+  ctx.clearRect(0, 0, W, H);
+
+  const scenarios = [
+    { mul: 1.20, color: '#A87C52', glow: 'rgba(168,124,82,0.4)',  label: '×' },
+    { mul: 1.30, color: '#5DBB6A', glow: 'rgba(93,187,106,0.4)',  label: '×' },
+    { mul: 1.50, color: '#E5A700', glow: 'rgba(229,167,0,0.4)',   label: '×' },
+  ];
+
+  scenarios.forEach(s => {
+    s.data = [startEth];
+    for (let i = 1; i <= JACKS; i++) s.data.push(s.data[i-1] * s.mul);
+  });
+
+  const maxVal = scenarios[2].data[JACKS];
+  const logMin = Math.log(startEth);
+  const logMax = Math.log(maxVal * 1.35);
+
+  const xPos = i => padL + (i / JACKS) * cW;
+  const yPos = v => padT + (1 - (Math.log(v) - logMin) / (logMax - logMin)) * cH;
+
+  // Background glow bands per scenario (subtle)
+  scenarios.forEach((s, si) => {
+    const grad = ctx.createLinearGradient(padL, 0, padL + cW, 0);
+    grad.addColorStop(0, 'transparent');
+    grad.addColorStop(1, s.color.replace(')', ',0.03)').replace('rgb', 'rgba'));
+    ctx.fillStyle = grad;
+  });
+
+  // Vertical grid lines
+  for (let i = 1; i <= JACKS; i++) {
+    ctx.strokeStyle = 'rgba(255,245,224,0.05)';
+    ctx.lineWidth = 1;
+    ctx.setLineDash([]);
+    ctx.beginPath();
+    ctx.moveTo(xPos(i), padT);
+    ctx.lineTo(xPos(i), padT + cH);
+    ctx.stroke();
+  }
+
+  // Y-axis ticks (multipliers of startEth)
+  const muls = [1, 2, 5, 10, 25, 57.7];
+  muls.forEach(m => {
+    const v = startEth * m;
+    if (v > maxVal * 1.3) return;
+    const y = yPos(v);
+    if (y < padT - 4 || y > padT + cH + 4) return;
+    // gridline
+    ctx.strokeStyle = 'rgba(255,245,224,0.06)';
+    ctx.lineWidth = 1;
+    ctx.setLineDash(m === 1 ? [] : [4, 6]);
+    ctx.beginPath(); ctx.moveTo(padL, y); ctx.lineTo(padL + cW, y); ctx.stroke();
+    ctx.setLineDash([]);
+    // label
+    ctx.fillStyle = 'rgba(255,245,224,0.28)';
+    ctx.font = '11px "Barlow Condensed", sans-serif';
+    ctx.textAlign = 'right';
+    ctx.fillText(m === 1 ? 'Start' : m + '×', padL - 8, y + 4);
+  });
+
+  // X-axis labels
+  ctx.fillStyle = 'rgba(255,245,224,0.22)';
+  ctx.font = '11px "Barlow Condensed", sans-serif';
+  ctx.textAlign = 'center';
+  [0, 2, 4, 6, 8, 10, 12].forEach(i => {
+    ctx.fillText(i === 0 ? 'Now' : `Jack ${i}`, xPos(i), padT + cH + 20);
+  });
+
+  // Draw lines (back to front)
+  scenarios.forEach(s => {
+    // Glow pass
+    ctx.strokeStyle = s.color;
+    ctx.lineWidth = 6;
+    ctx.globalAlpha = 0.15;
+    ctx.shadowColor = s.color;
+    ctx.shadowBlur = 12;
+    ctx.beginPath();
+    s.data.forEach((v, i) => { i === 0 ? ctx.moveTo(xPos(i), yPos(v)) : ctx.lineTo(xPos(i), yPos(v)); });
+    ctx.stroke();
+    ctx.globalAlpha = 1;
+    ctx.shadowBlur = 0;
+
+    // Main line
+    ctx.strokeStyle = s.color;
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    s.data.forEach((v, i) => { i === 0 ? ctx.moveTo(xPos(i), yPos(v)) : ctx.lineTo(xPos(i), yPos(v)); });
+    ctx.stroke();
+
+    // Dots at each jack
+    s.data.forEach((v, i) => {
+      ctx.fillStyle = s.color;
+      ctx.beginPath();
+      ctx.arc(xPos(i), yPos(v), i === 0 ? 4 : 3, 0, Math.PI * 2);
+      ctx.fill();
+    });
+
+    // End-of-line label
+    const last = s.data[JACKS];
+    const mul  = (last / startEth).toFixed(0);
+    const lx   = xPos(JACKS) + 12;
+    const ly   = yPos(last);
+    ctx.fillStyle = s.color;
+    ctx.font = 'bold 12px "Barlow Condensed", sans-serif';
+    ctx.textAlign = 'left';
+    ctx.fillText(mul + '×', lx, ly + 4);
+    const ethLbl = last >= 0.001 ? last.toFixed(3) : last.toFixed(5);
+    ctx.fillStyle = 'rgba(255,245,224,0.4)';
+    ctx.font = '10px "Barlow Condensed", sans-serif';
+    ctx.fillText(ethLbl + ' ETH', lx, ly + 15);
+  });
+
+  // Base price label
+  const baseLabel = startEth >= 0.001 ? startEth.toFixed(4) : startEth.toFixed(6);
+  document.getElementById('growth-base-label').textContent = baseLabel + ' ETH';
+}
+
+// ── BID INPUT HANDLER ────────────────────────────────────────────────────────
+let currentMinAskEth = 0;
+
+function updateBidInput(minAskEth, stageStr, stageIdx) {
+  const inputEl = document.getElementById('jack-amount-input');
+  if (!inputEl) return;
+
+  currentMinAskEth = minAskEth;
+  inputEl.setAttribute('min', minAskEth.toFixed(6));
+
+  // Only set value if untouched or was previously at minimum
+  const current = parseFloat(inputEl.value) || 0;
+  if (current === 0 || Math.abs(current - currentMinAskEth) < 0.00001 || current < minAskEth) {
+    inputEl.value = minAskEth.toFixed(4);
+    inputEl.classList.remove('over-min', 'under-min');
+  }
+  refreshBidUI(stageStr, stageIdx);
+}
+
+function refreshBidUI(stageStr, stageIdx) {
+  const inputEl = document.getElementById('jack-amount-input');
+  const btn     = document.getElementById('jack-btn');
+  const usdEl   = document.getElementById('jack-usd');
+  if (!inputEl || !btn) return;
+
+  if (stageStr === 'boil') {
+    inputEl.disabled = true;
+    return;
+  }
+  inputEl.disabled = false;
+
+  const val    = parseFloat(inputEl.value) || 0;
+  const minEth = currentMinAskEth;
+  const isUnder = val < minEth - 0.000001;
+  const isOver  = val > minEth + 0.000001;
+
+  inputEl.classList.toggle('under-min', isUnder);
+  inputEl.classList.toggle('over-min',  isOver && !isUnder);
+
+  if (isUnder || val === 0) {
+    btn.textContent = '⚡ Jack';
+    btn.disabled = true;
+  } else {
+    btn.textContent = `⚡ Jack for ${val.toFixed(4)} ETH`;
+    btn.disabled = false;
+  }
+
+  // USD / info line
+  const usdStr = ethPrice > 0 ? '≈ $' + Math.round(val * ethPrice).toLocaleString() + ' · ' : '';
+  if (isUnder) {
+    usdEl.textContent = `Min: ${minEth.toFixed(4)} ETH · must overpay +${({'dormant':'20','sprouting':'30','harvest':'50'}[stageStr]||'?')}%`;
+  } else if (isOver && stageIdx >= 0) {
+    const pct = ((val / minEth - 1) * 100).toFixed(1);
+    const creatorFee = val * CREATOR_FEE_BPS / (10000 + CREATOR_FEE_BPS);
+    const base = val - creatorFee;
+    const sellerAmt = base * SELLER_BPS[stageIdx] / 10000;
+    const sellerStr = ethPrice > 0 ? '$' + Math.round(sellerAmt * ethPrice).toLocaleString() : sellerAmt.toFixed(4) + ' ETH';
+    usdEl.textContent = `${usdStr}overpaying +${pct}% · seller gets ${sellerStr}`;
+  } else {
+    const overpayPct = {'dormant':'20','sprouting':'30','harvest':'50'}[stageStr] || '?';
+    usdEl.textContent = `${usdStr}${stageStr.charAt(0).toUpperCase()+stageStr.slice(1)} · min +${overpayPct}% above last price`;
+  }
+}
+
 // ── WALLET CONNECT ───────────────────────────────────────────────────────────
 async function connectWallet() {
   if (!window.ethereum) {
@@ -2174,9 +2471,16 @@ async function doJack() {
     const c = new ethers.Contract(GAME_ADDRESS, GAME_ABI, signer);
     const minAsk = await readContract.minNextAsk();
 
+    // Use user's custom bid if set and valid, otherwise use minimum
+    const inputEl = document.getElementById('jack-amount-input');
+    const inputVal = inputEl ? parseFloat(inputEl.value) : 0;
+    const bidWei = (inputVal > 0 && ethers.parseEther(inputVal.toFixed(6)) >= minAsk)
+      ? ethers.parseEther(inputVal.toFixed(6))
+      : minAsk;
+
     btn.textContent = 'Confirm in wallet…';
     btn.disabled = true;
-    const tx = await c.jackPotato({ value: minAsk });
+    const tx = await c.jackPotato({ value: bidWei });
     btn.textContent = 'Mining…';
     await tx.wait();
     btn.textContent = '✅ Jacked! Generating souvenir…';
@@ -2243,9 +2547,16 @@ function showTab(id) {
 }
 
 // ── WIRE UP ──────────────────────────────────────────────────────────────────
-document.querySelector('.connect-btn').onclick     = connectWallet;
-document.getElementById('jack-btn').onclick        = doJack;
-document.querySelector('.vote-btn').onclick        = doVote;
+document.querySelector('.connect-btn').onclick = connectWallet;
+document.getElementById('jack-btn').onclick    = doJack;
+document.querySelector('.vote-btn').onclick    = doVote;
+
+// Bid input — live refresh of button/USD/split as user types
+document.getElementById('jack-amount-input')?.addEventListener('input', function() {
+  const stageStr = document.getElementById('body').dataset.stage;
+  const stageIdx = STAGE_NAMES.indexOf(stageStr);
+  refreshBidUI(stageStr, stageIdx);
+});
 
 init();
 </script>
