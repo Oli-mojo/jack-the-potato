@@ -112,6 +112,7 @@ a { color: inherit; text-decoration: none; }
   margin: 0 24px;
 }
 .ticker-item .hi { color: var(--yellow); }
+.ticker-item.ticker-up { color: var(--green); font-weight: 800; letter-spacing: 0.14em; }
 .ticker-sep { color: rgba(255,255,255,0.3); margin: 0 8px; }
 
 /* ── NAV ── */
@@ -1855,26 +1856,19 @@ canvas#growth-canvas {
 </head>
 <body id="body" data-stage="sprouting">
 
-<!-- DEMO STAGE SWITCHER -->
-<div class="demo-bar">
-  <span>↳ PREVIEW STAGE:</span>
-  <button class="demo-btn" onclick="setStage('dormant')">🥔 Dormant</button>
-  <button class="demo-btn active" onclick="setStage('sprouting')">🌱 Sprouting</button>
-  <button class="demo-btn" onclick="setStage('harvest')">🌾 Harvest</button>
-  <button class="demo-btn" onclick="setStage('boil')">🔥 The Boil</button>
-</div>
-
 <!-- TICKER -->
 <div class="ticker">
   <div class="ticker-inner" id="ticker-inner">
     <span class="ticker-item">🥔 JACK THE POTATO · SEASON 1 LIVE</span>
     <span class="ticker-item">CURRENT PRICE <span class="hi">1.65 ETH</span></span>
+    <span class="ticker-item ticker-up">PRICE ONLY GOES UP ↑</span>
     <span class="ticker-item" id="ticker-stage">🌱 SPROUTING <span class="ticker-sep">·</span> MIN OVERPAY +30%</span>
     <span class="ticker-item">JACKPOT RESERVE <span class="hi">$1,247</span></span>
     <span class="ticker-item">LAST JACK 14 DAYS AGO</span>
     <span class="ticker-item">47 SOUVENIRS MINTED THIS SEASON</span>
     <span class="ticker-item">🥔 JACK THE POTATO · SEASON 1 LIVE</span>
     <span class="ticker-item">CURRENT PRICE <span class="hi">1.65 ETH</span></span>
+    <span class="ticker-item ticker-up">PRICE ONLY GOES UP ↑</span>
     <span class="ticker-item" id="ticker-stage2">🌱 SPROUTING <span class="ticker-sep">·</span> MIN OVERPAY +30%</span>
     <span class="ticker-item">JACKPOT RESERVE <span class="hi">$1,247</span></span>
     <span class="ticker-item">LAST JACK 14 DAYS AGO</span>
