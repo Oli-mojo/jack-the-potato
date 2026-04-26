@@ -1333,10 +1333,16 @@ footer {
 .pb-eth.pot { color: var(--pot); }
 .pb-usd {
   font-family: 'Barlow Condensed', sans-serif;
-  font-size: 12px;
-  color: rgba(255,245,224,0.35);
-  margin-top: 1px;
+  font-size: 16px;
+  font-weight: 600;
+  color: rgba(255,245,224,0.45);
+  margin-top: 2px;
 }
+.pb-usd.pot-usd {
+  color: rgba(155,121,245,0.7);
+}
+@keyframes pot-tick { 0%,80%,100%{opacity:1} 50%{opacity:0.6} }
+.pot-ticking { animation: pot-tick 2s ease-in-out infinite; }
 .pb-note {
   font-family: 'Barlow Condensed', sans-serif;
   font-size: 10px;
@@ -1908,14 +1914,14 @@ canvas#growth-canvas {
     <!-- Price blocks: current price + jackpot -->
     <div class="price-blocks">
       <div class="price-block">
-        <div class="pb-label">Current Price</div>
+        <div class="pb-label">Last Price</div>
         <div class="pb-eth" id="pb-price">—</div>
         <div class="pb-usd" id="pb-price-usd">loading…</div>
       </div>
       <div class="price-block">
         <div class="pb-label">🏆 Season Jackpot</div>
         <div class="pb-eth pot" id="pb-pot">—</div>
-        <div class="pb-usd" id="pb-pot-usd">loading…</div>
+        <div class="pb-usd pot-usd" id="pb-pot-usd">loading…</div>
         <div class="pb-note" id="pb-pot-note">Win &amp; take 85%</div>
       </div>
     </div>
@@ -1959,25 +1965,8 @@ canvas#growth-canvas {
     <!-- Jack panel -->
     <div class="jack-panel">
 
-      <!-- You pay + guaranteed back row -->
-      <div class="bid-total-row">
-        <div>
-          <div class="bid-total-label">You pay</div>
-          <div class="bid-total-eth" id="bid-total-eth">—</div>
-          <div class="bid-total-usd" id="bid-total-usd"></div>
-        </div>
-        <div style="text-align:right;">
-          <div class="bid-total-label">Guaranteed back if jacked</div>
-          <div class="bid-total-eth" id="bid-earnout-eth" style="color:var(--green);">—</div>
-          <div class="bid-guarantee-badge" id="bid-guarantee-badge" style="display:none;"></div>
-          <div class="bid-total-usd" id="bid-earnout-usd"></div>
-        </div>
-      </div>
-
-      <button class="jack-btn" id="jack-btn" style="margin-top:10px;">⚡ Jack</button>
-
       <!-- Overpay selector -->
-      <div class="overpay-section">
+      <div class="overpay-section" style="margin-top:0;padding-top:0;border-top:none;">
         <div class="overpay-label">Overpay by</div>
         <div class="overpay-radios">
           <div class="op-opt selected" data-pct="20" onclick="selectOverpay(this, 20)">+20%</div>
@@ -1992,10 +1981,10 @@ canvas#growth-canvas {
       </div>
 
       <!-- Split display -->
-      <div class="split-display" id="split-display">
+      <div class="split-display" id="split-display" style="margin-top:10px;">
         <div class="split-seg split-seller">
           <span class="seg-pct" id="split-seller-pct">80%</span>
-          <span class="seg-label" id="split-seller-label">→ Seller</span>
+          <span class="seg-label" id="split-seller-label">→ Current Holder</span>
         </div>
         <div class="split-seg split-pot">
           <span class="seg-pct" id="split-pot-pct">20%</span>
@@ -2003,10 +1992,22 @@ canvas#growth-canvas {
         </div>
       </div>
       <div style="font-family:'Barlow Condensed',sans-serif;font-size:9px;color:rgba(255,245,224,0.25);margin-top:5px;letter-spacing:0.06em;">
-        + 2% creator fee charged on top of purchase price
+        + 2% creator fee on top · remaining splits to holder &amp; pot
       </div>
+
+      <button class="jack-btn" id="jack-btn" style="margin-top:12px;">⚡ Jack</button>
+
+      <!-- Hidden fields kept for JS compat -->
+      <div style="display:none;">
+        <div id="bid-total-eth"></div>
+        <div id="bid-total-usd"></div>
+        <div id="bid-earnout-eth"></div>
+        <div id="bid-earnout-usd"></div>
+        <div id="bid-guarantee-badge"></div>
+      </div>
+
       <div style="margin-top:12px;padding:10px 12px;background:rgba(155,121,245,0.07);border:1px solid rgba(155,121,245,0.18);border-radius:8px;font-family:'Barlow Condensed',sans-serif;font-size:11px;color:rgba(255,245,224,0.55);line-height:1.6;letter-spacing:0.03em;">
-        🏆 <strong style="color:var(--pot);">If nobody jacks you</strong> — no earnout needed. You hold until The Boil fires and claim <strong style="color:var(--pot);">85% of the Season Pot</strong> instead.
+        🏆 <strong style="color:var(--pot);">If nobody jacks you</strong> — you hold until The Boil fires and claim <strong style="color:var(--pot);">85% of the Season Pot</strong> instead.
       </div>
     </div>
   </div>
@@ -2658,6 +2659,20 @@ async function loadContractData() {
       : '';
     if (pbPotNote) pbPotNote.textContent = 'Win & take ' + (potEth * 0.85).toFixed(4) + ' ETH (85%)';
 
+    // Animate jackpot ticking up slowly (cosmetic — simulates fee drip)
+    if (window._potTickInterval) clearInterval(window._potTickInterval);
+    if (pbPot && ethPrice > 0) {
+      let displayPot = potEth;
+      const tickRate = 0.0000008; // ~0.07 ETH/day drip — cosmetic
+      window._potTickInterval = setInterval(() => {
+        displayPot += tickRate;
+        pbPot.textContent = displayPot.toFixed(4) + ' ETH';
+        if (pbPotUsd) pbPotUsd.textContent = '≈ $' + Math.round(displayPot * ethPrice).toLocaleString();
+        if (pbPotNote) pbPotNote.textContent = 'Win & take ' + (displayPot * 0.85).toFixed(4) + ' ETH (85%)';
+      }, 1000);
+      pbPot.classList.add('pot-ticking');
+    }
+
     // Holder
     const isZero = holderAddr === '0x0000000000000000000000000000000000000000';
     const shortH = isZero ? '—' : holderAddr.slice(0,6) + '…' + holderAddr.slice(-4);
@@ -2693,8 +2708,8 @@ async function loadContractData() {
     const resAmount = document.getElementById('res-amount');
     const resSub    = document.getElementById('res-sub');
     const resBar    = document.getElementById('res-bar-fill');
-    if (resAmount) resAmount.textContent = fmt(potEth);
-    if (resSub) resSub.textContent = potEth.toFixed(4) + ' ETH · grows every time the potato is jacked';
+    if (resAmount) { resAmount.textContent = fmt(potEth); resAmount.dataset.basePot = potEth; }
+    if (resSub) resSub.textContent = potEth.toFixed(4) + ' ETH · grows with every jack, seed &amp; call';
     // Bar: scale relative to a rough target (e.g. 5 ETH = full bar)
     if (resBar) resBar.style.width = Math.min(100, (potEth / 5) * 100).toFixed(1) + '%';
 
@@ -2709,7 +2724,7 @@ async function loadContractData() {
       document.getElementById('split-display').style.display = 'flex';
       document.getElementById('split-seller-pct').textContent = (SELLER_BPS[stage]/100) + '%';
       document.getElementById('split-pot-pct').textContent    = (RESERVE_BPS[stage]/100) + '%';
-      document.getElementById('split-seller-label').textContent = isHolder ? '→ You' : '→ Seller';
+      document.getElementById('split-seller-label').textContent = isHolder ? '→ You' : '→ Current Holder';
       if (isHolder) {
         document.getElementById('jack-btn').textContent = '🥔 You\'re holding it';
         document.getElementById('jack-btn').disabled = true;
